@@ -17,6 +17,9 @@ void find_start(struct Selector* s, xmlNode* top, const char* name) {
 
 const char* namefor(xmlNode* n) {
 	if(n==NULL) return "(null)";
+	if(n->type == XML_TEXT_NODE) {
+		return xmlNodeGetContent(n);
+	}
 	return n->name;
 }
 

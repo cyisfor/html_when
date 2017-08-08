@@ -52,6 +52,7 @@ void html_when(xmlNode* root) {
 			if(0 == strcasecmp(n->name,"val")) {
 				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
 				xmlReplaceNode(n,new);
+				assert(n != selector.next);
 				n = new;
 			} else if(n->type == XML_ELEMENT_NODE) {
 				xmlNode* kid = n->children;
