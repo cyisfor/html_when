@@ -60,7 +60,7 @@ xmlNode* html_when(xmlNode* root) {
 					xmlReplaceNode(n,new);
 					return new;
 				} else if(0 == strcasecmp(n->name,"when")) {
-					// should be impossible?
+					// should be impossible? we handle from bottom up!
 					perror("what?");
 					htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
 					abort();
