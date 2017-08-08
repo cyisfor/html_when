@@ -1,4 +1,4 @@
-PKG:=libxml2
+PKG:=libxml
 CFLAGS+=-ggdb $(shell pkg-config --cflags $(PKG))
 LDLIBS+=$(shell pkg-config --libs $(PKG))
 
