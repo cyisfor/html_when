@@ -118,8 +118,9 @@ void html_when(xmlNode* root) {
 			}
 		}
 		// cur should be empty now
-		xmlNode* backtrack = cur->prev;
-		if(!backtrack) backtrack = cur->next;
+		// don't check prev, since that's already been checked
+		// (it either was below us, or behind us)
+		xmlNode* backtrack = cur->next;
 		if(!backtrack) backtrack = cur->parent;
 		xmlUnlinkNode(cur);
 		xmlFreeNode(cur);
