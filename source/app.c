@@ -16,6 +16,8 @@ int main(int argc, char**argv) {
 	assert (ctxt != NULL);
 	ctxt->recovery = 1;
 	void	on_error(void * userData, xmlErrorPtr error) {
+		fprintf(stderr,"um %s %s\n",error->message,
+						error->level == XML_ERR_FATAL ? "fatal..." : "ok");
 		return;
 	}
 	xmlSetStructuredErrorFunc(NULL,on_error);

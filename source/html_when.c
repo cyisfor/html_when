@@ -1,5 +1,6 @@
 #include "html_when.h"
 #include "selectors.h"
+#include <libxml/HTMLtree.h>
 #include <string.h> // strlen
 #include <stdlib.h> // getenv
 #include <stdio.h> // debugging
