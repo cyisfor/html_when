@@ -26,8 +26,8 @@ void html_when(xmlNode* root) {
 				condition = !condition;
 			} else if(a->name) {
 				const char* name = a->name;
-				while(*name && name[0] == '!') {
-					++name;
+				while(name[0] == 'u' && name[1] == 'n') {
+					name += 2;
 					condition = !condition;
 				}
 				if(*name) {
