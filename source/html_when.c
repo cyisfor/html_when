@@ -33,17 +33,20 @@ void html_when(xmlNode* root) {
 				if(*name) {
 					envval = getenv(name);
 					if(envval != NULL) {
-						xmlChar* val = xmlGetProp(cur,name);
-						if(val == NULL) {
+						assert(a->type == XML_ATTRIBUTE_NODE);
+						bool noval = a->children == NULL;
+						if(noval) {
 							// without a value, no limitation to making falsity true and vice versa
  							condition = !condition;
 						} else {
+							assert(a->children->type == XML_TEXT_NODE);
+							assert(a->children->next == NULL);
+							xmlChar* val = a->children->content;
 							// val is already unescaped
 							if(envval && 0==strcasecmp(val,envval)) {
 								condition = !condition;
 							}
 						}
-						xmlFree(val);
 					}
 				}
 			}
