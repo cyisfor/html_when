@@ -2,7 +2,7 @@
 #include "html_when.h"
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
-
+#include <assert.h>
 
 int main(int argc, char**argv) {
 	htmlParserCtxt* ctxt;
@@ -18,6 +18,7 @@ int main(int argc, char**argv) {
 	void	on_error(void * userData, xmlErrorPtr error) {
 		return;
 	}
+	xmlSetStructuredErrorFunc(NULL,on_error);
 	ctxt->sax->serror = &on_error;
 
 	xmlDoc* doc = htmlCtxtReadFd(ctxt,
