@@ -5,7 +5,7 @@
 
 
 int main(int argc, char**argv) {
-	htmlDoc* doc = htmlReadFd(0,"","UTF-8",
+	xmlDoc* doc = htmlReadFd(0,"","UTF-8",
 														HTML_PARSE_RECOVER |
 														HTML_PARSE_NONET |
 														HTML_PARSE_COMPACT);
