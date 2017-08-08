@@ -84,6 +84,7 @@ void html_when(xmlNode* root) {
 						}
 					}
 				}
+				kid = replaceval(kid);
 				xmlAddPrevSibling(cur,kid);
 				kid = kid->next;
 			}
