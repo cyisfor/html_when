@@ -8,8 +8,8 @@
 #include <assert.h>
 #include <stdbool.h>
 
-void html_when(xmlNode* root) {
-	if(!root) return;
+xmlNode* html_when(xmlNode* root) {
+	if(!root) return root;
 
 	struct Selector selector = {};
 	find_start(&selector, "when");
@@ -54,14 +54,21 @@ void html_when(xmlNode* root) {
 
 		xmlNode* replaceval(xmlNode* n) {
 			if(!envval) return n;
-			if(0 == strcasecmp(n->name,"val")) {
-				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
-				xmlReplaceNode(n,new);
-				n = new;
-			} else if(n->type == XML_ELEMENT_NODE) {
-				xmlNode* kid = n->children;
-				for(;kid;kid = kid->next) {
-					kid = replaceval(kid);
+			if(n->type == XML_ELEMENT_NODE) {
+				if(0 == strcasecmp(n->name,"val")) {
+					xmlNode* new = xmlNewText(envval); // need make 1 per replacement
+					xmlReplaceNode(n,new);
+					return new;
+				} else if(0 == strcasecmp(n->name,"when")) {
+					// should be impossible?
+					perror("what?");
+					htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
+					abort();
+				} else {
+					xmlNode* kid = n->children;
+					for(;kid;kid = kid->next) {
+						kid = replaceval(kid);
+					}
 				}
 			}
 			return n;
