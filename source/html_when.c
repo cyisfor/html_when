@@ -91,7 +91,6 @@ void html_when(xmlNode* root) {
 						}
 					}
 				}
-				kid = replaceval(kid);
 				xmlAddPrevSibling(cur,kid);
 				kid = kid->next;
 			}
@@ -102,12 +101,16 @@ void html_when(xmlNode* root) {
 				if(kid->type == XML_ELEMENT_NODE) {
 					if(strcasecmp(kid->name,"else")==0) {
 						// remove this, move the rest to parent, checking for val
+						xmlNode* next = kid->next;
 						xmlUnlinkNode(kid);
 						xmlFreeNode(kid);
-						kid = NULL;
+						kid = next;
 						break;
 					}
 				}
+				// remove until else
+				xmlUnlinkNode(kid);
+				xmlFreeNode(kid);
 			}
 			while(kid) {
 				kid = replaceval(kid);
