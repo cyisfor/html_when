@@ -31,5 +31,5 @@ int main(int argc, char**argv) {
 	htmlNodeDumpFileFormat(stderr,doc,doc,"UTF-8",1);
 	ensure_ne(NULL,doc)
 	html_when((xmlNode*)doc); // magic...
-	htmlSaveFile("/tmp/output.deleteme",doc);
+	htmlSaveFileEnc("/tmp/output.deleteme",doc,"UTF-8");
 }
