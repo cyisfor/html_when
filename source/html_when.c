@@ -52,7 +52,6 @@ void html_when(xmlNode* root) {
 			if(0 == strcasecmp(n->name,"val")) {
 				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
 				xmlReplaceNode(n,new);
-				assert(n != selector.next);
 				n = new;
 			} else if(n->type == XML_ELEMENT_NODE) {
 				xmlNode* kid = n->children;
@@ -91,7 +90,6 @@ void html_when(xmlNode* root) {
 					if(strcasecmp(kid->name,"else")==0) {
 						// remove this, move the rest to parent, checking for val
 						xmlUnlinkNode(kid);
-						assert(kid != selector.next);
 						xmlFreeNode(kid);
 						kid = NULL;
 						break;
