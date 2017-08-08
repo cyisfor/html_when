@@ -1,8 +1,13 @@
 CFLAGS+=-ggdb -Ilibxml2/include/
-LDLIBS+=libxml2/.libs/libxml2.a
 
-test: source/app.c libhtmlwhen.a
+test: source/app.c libhtmlwhen.a libxml2/.libs/libxml2.a
 	gcc $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+libxml2/.libs/libxml2.a: libxml2/configure
+	cd libxml2 && ./configure && make
+
+libxml2/configure:
+	cd libxml2 && sh autogen.sh
 
 libhtmlwhen.a: o/html_when.o o/selectors.o | o
 	$(AR) $(ARFLAGS) $@ $^
