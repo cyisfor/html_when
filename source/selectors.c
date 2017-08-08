@@ -52,6 +52,19 @@ xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 	}
 		
 	for(;;) {
+		bool check = down();
+		if(!check) check = right();
+		if(!check) {
+			// if we go up, just go immediately right but not down
+			check = up();
+			if(check)
+				check = right();
+			if(!check) {
+				// can't go right, down, or up
+				find_destroy(pos);
+				return NULL;
+			}
+		}
 		if(cur->type == XML_ELEMENT_NODE && strcasecmp(cur->name, pos->name)==0) {
 			fprintf(stderr,"found it!\n");
 			return cur;
