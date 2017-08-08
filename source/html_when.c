@@ -91,8 +91,9 @@ void html_when(xmlNode* root) {
 						}
 					}
 				}
+				xmlNode* next = kid->next;
 				xmlAddPrevSibling(cur,kid);
-				kid = kid->next;
+				kid = next;
 			}
 		} else {
 			// negative when clause
