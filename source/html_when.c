@@ -5,6 +5,7 @@
 #include <stdio.h> // debugging
 #include <ctype.h> // debugging
 #include <assert.h>
+#include <stdbool.h>
 
 void html_when(xmlNode* root) {
 	if(!root) return;
@@ -29,22 +30,22 @@ void html_when(xmlNode* root) {
 				}
 				if(*name) {
 					envval = getenv(name);
-					if(!*a->children) {
-						if(envval != NULL) {
+					if(envval != NULL) {
+						xmlChar* val = xmlGetProp(cur,name);
+						if(val == NULL) {
 							// without a value, no limitation to making falsity true and vice versa
  							condition = !condition;
+						} else {
+							// val is already unescaped
+							if(envval && 0==strcasecmp(val,envval)) {
+								condition = !condition;
+							}
 						}
-					} else {
-						// a->value is already unescaped
-						if(envval && 0==strcasecmp(a->children,envval)) {
-							condition = !condition;
-						}
+						xmlFree(val);
 					}
 				}
 			}
 		}
-
-		size_t envvallen = envval ? strlen(envval) : 0;
 
 		xmlNode* replaceval(xmlNode* n) {
 			if(!envval) return n;
