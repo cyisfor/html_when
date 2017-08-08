@@ -52,6 +52,10 @@ xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 	}
 		
 	for(;;) {
+		if(cur->type == XML_ELEMENT_NODE && strcasecmp(cur->name, pos->name)==0) {
+			fprintf(stderr,"found it!\n");
+			return cur;
+		}
 		bool check = down();
 		if(!check) check = right();
 		if(!check) {
@@ -65,26 +69,5 @@ xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 				return NULL;
 			}
 		}
-		if(cur->type == XML_ELEMENT_NODE && strcasecmp(cur->name, pos->name)==0) {
-			fprintf(stderr,"found it!\n");
-			return cur;
-		}
-		switch(pos->last) {
-		case UP:
-			if(right()) pos->last = RIGHT;
-			else if(up()) pos->last = UP;
-			else {
-				// we're done
-				find_destroy(pos);
-				return NULL;
-			}
-			break;
-		case DOWN:
-		case RIGHT:
-			if(down()) pos->last = DOWN;
-			else if(right()) pos->last = RIGHT;
-			else if(up()) pos->last = UP;
-			else error(23,0,"couldn't move??");
-		};
 	}
 }

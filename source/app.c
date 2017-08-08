@@ -25,6 +25,6 @@ int main(int argc, char**argv) {
 															 HTML_PARSE_NONET |
 															 HTML_PARSE_COMPACT);
 	ensure_ne(NULL,doc)
-	html_when(doc->children);
+	html_when((xmlNode*)doc); // magic...
 	htmlSaveFile("/tmp/output.deleteme",doc);
 }
