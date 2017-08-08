@@ -16,6 +16,7 @@ void html_when(xmlNode* root) {
 	for(cur = find_next(root, &selector);
 			cur;
 			cur = find_next(cur, &selector)) {
+		htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
 		bool condition = false; // <when nonexistentvar> => else clause
 		const char* envval = NULL;
 		xmlAttr* a = cur->properties;

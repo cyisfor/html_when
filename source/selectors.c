@@ -23,6 +23,7 @@ const char* namefor(xmlNode* n) {
 
 xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 #define POS pos->data[pos->n-1]
+	if(!cur) return NULL;
 	bool right(void) {
 		if(!cur->next) return false;
 		fprintf(stderr,"RIGHT %s->%s\n",
