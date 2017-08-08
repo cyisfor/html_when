@@ -91,6 +91,7 @@ void html_when(xmlNode* root) {
 					if(strcasecmp(kid->name,"else")==0) {
 						// remove this, move the rest to parent, checking for val
 						xmlUnlinkNode(kid);
+						assert(kid != selector.next);
 						xmlFreeNode(kid);
 						kid = NULL;
 						break;
@@ -106,6 +107,7 @@ void html_when(xmlNode* root) {
 		}
 		// cur should be empty now
 		xmlUnlinkNode(cur);
+		assert(cur != selector.next);
 		xmlFreeNode(cur);
 	}
 }
