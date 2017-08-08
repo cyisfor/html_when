@@ -70,14 +70,8 @@ void html_when(xmlNode* root) {
 			while(kid) {
 				if(kid->type == XML_ELEMENT_NODE) {
 					if(strcasecmp(kid->name,"else")==0) {
-						// remove this, and all the rest after.
-						kid->prev = NULL;
-						while(kid) {
-							xmlNode* next = kid->next;
-							xmlUnlinkNode(kid);
-							xmlFreeNode(kid);
-							kid = next;
-						}
+						// ignore this, and all the rest after.
+						// will be removed with cur
 						break;
 					} else {
 						if(envval) {
