@@ -53,7 +53,7 @@ void html_when(xmlNode* root) {
 				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
 				xmlReplaceNode(n,new);
 				n = new;
-			} else if(kid->type == XML_ELEMENT_NODE) {
+			} else if(n->type == XML_ELEMENT_NODE) {
 				xmlNode* kid = n->children;
 				for(;kid;kid = kid->next) {
 					kid = replaceval(kid);

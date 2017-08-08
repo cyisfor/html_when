@@ -3,14 +3,14 @@
 #include <error.h>
 #include <assert.h>
 #include <stdio.h>
-
+#include <stdbool.h>
 static void find_destroy(struct Selector* s) {
 }
 
-void find_start(struct Selector* s, xmlNode* top, const char* check) {
+void find_start(struct Selector* s, xmlNode* top, const char* name) {
 	assert(s->last == DOWN);
 	assert(s->next == NULL);
-	s->check = check;
+	s->name = name;
 	s->next = top;
 }
 
@@ -64,7 +64,7 @@ xmlNode* find_next(struct Selector* pos) {
 			else if(up()) pos->last = UP;
 			else error(23,0,"couldn't move??");
 		};
-		if(last->type == XML_ELEMENT_NODE && strcasecmp(last->name, pos->check)==0) {
+		if(last->type == XML_ELEMENT_NODE && strcasecmp(last->name, pos->name)==0) {
 			fprintf(stderr,"found it!\n");
 			pos->next = cur;
 			return last;
