@@ -10,7 +10,7 @@ void html_when(xmlNode* root) {
 	if(!root) return;
 
 	struct Selector selector = {};
-	find_start(&selector, root, "when", NULL);
+	find_start(&selector, root, "when");
 	for(;;) {
 		xmlNode* cur = find_next(&selector);
 		if(!cur) return;

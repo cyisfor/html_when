@@ -9,10 +9,10 @@ enum directions { DOWN, /*LEFT,*/ RIGHT, UP } ;
 */
 
 struct Selector {
-	htmlNode* next;
-	const char* name
+	xmlNode* next;
+	const char* name;
 	enum directions last;
 };
 
 void find_start(struct Selector* s, xmlNode* top, const char* name);
-htmlNode* find_next(struct Selector* pos);
+xmlNode* find_next(struct Selector* pos);
