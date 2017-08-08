@@ -72,6 +72,9 @@ void html_when(xmlNode* root) {
 					if(strcasecmp(kid->name,"else")==0) {
 						// remove this, and all the rest after.
 						kid->prev = NULL;
+						xmlNode* hack = kid->next;
+						xmlUnlinkNode(kid);
+						kid->next = hack;
 						xmlFreeNodeList(kid);
 						kid = NULL;
 						break;
