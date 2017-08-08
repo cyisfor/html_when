@@ -7,21 +7,21 @@
 static void find_destroy(struct Selector* s) {
 }
 
-void find_start(struct Selector* s, htmlNode* top, const char* check) {
+void find_start(struct Selector* s, xmlNode* top, const char* check) {
 	assert(s->last == DOWN);
 	assert(s->next == NULL);
 	s->check = check;
 	s->next = top;
 }
 
-const char* namefor(htmlNode* n) {
+const char* namefor(xmlNode* n) {
 	return n->name;
 }
 
-htmlNode* find_next(struct Selector* pos) {
+xmlNode* find_next(struct Selector* pos) {
 #define POS pos->data[pos->n-1]
 	assert(pos->next);
-	htmlNode* cur = pos->next;
+	xmlNode* cur = pos->next;
 	pos->next = NULL; // dunno it anymore
 	bool right(void) {
 		if(!cur->next) return false;
@@ -46,7 +46,7 @@ htmlNode* find_next(struct Selector* pos) {
 		
 	for(;;) {
 		// can't return yet, have to go to the next one.
-		htmlNode* last = cur;
+		xmlNode* last = cur;
 		switch(pos->last) {
 		case UP:
 			if(right()) pos->last = RIGHT;

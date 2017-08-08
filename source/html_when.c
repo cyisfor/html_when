@@ -6,13 +6,13 @@
 #include <ctype.h> // debugging
 #include <assert.h>
 
-void html_when(htmlNode* root) {
+void html_when(xmlNode* root) {
 	if(!root) return;
 
 	struct Selector selector = {};
 	find_start(&selector, root, "when", NULL);
 	for(;;) {
-		htmlNode* cur = find_next(&selector);
+		xmlNode* cur = find_next(&selector);
 		if(!cur) return;
 
 		bool condition = false; // <when nonexistentvar> => else clause
@@ -46,7 +46,7 @@ void html_when(htmlNode* root) {
 
 		size_t envvallen = envval ? strlen(envval) : 0;
 
-		xmlNode* replaceval(htmlNode* n) {
+		xmlNode* replaceval(xmlNode* n) {
 			if(!envval) return n;
 			if(0 == strcasecmp(n->name,"val")) {
 				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
