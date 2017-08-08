@@ -98,21 +98,16 @@ void html_when(xmlNode* root) {
 					}
 				}
 			}
-			if(kid) {
-				selector.next = kid;
-				while(kid) {
-					kid = replaceval(kid);
-					xmlNode* next = kid->next;
-					xmlAddPrevSibling(cur,kid);
-					kid = next;
-				}
-			} else {
-				selector.next = cur->prev;
+			while(kid) {
+				kid = replaceval(kid);
+				xmlNode* next = kid->next;
+				xmlAddPrevSibling(cur,kid);
+				kid = next;
 			}
 		}
 		// cur should be empty now
 		xmlUnlinkNode(cur);
 		assert(cur != selector.next);
-		xmlFreeNode(cur);
+		//xmlFreeNode(cur);
 	}
 }
