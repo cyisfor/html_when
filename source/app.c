@@ -21,7 +21,7 @@ int main(int argc, char**argv) {
 	ctxt->sax->serror = &on_error;
 
 	xmlDoc* doc = htmlCtxtReadFd(ctxt,
-															 0,"","UTF-8",
+															 0,"","UTF8",
 															 HTML_PARSE_RECOVER |
 															 HTML_PARSE_NONET |
 															 HTML_PARSE_COMPACT);
