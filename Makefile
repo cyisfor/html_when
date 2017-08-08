@@ -1,5 +1,5 @@
-CFLAGS+=-ggdb $(shell xml2-config --cflags)
-LDLIBS+=$(shell xml2-config --libs)
+CFLAGS+=-ggdb -Ilibxml2/include/
+LDLIBS+=libxml2/.libs/libxml2.a
 
 test: source/app.c libhtmlwhen.a
 	gcc $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)

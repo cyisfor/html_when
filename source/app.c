@@ -6,7 +6,7 @@
 
 int main(int argc, char**argv) {
 	htmlParserCtxt* ctxt;
-xmlSubstituteEntitiesDefault(0);
+	xmlSubstituteEntitiesDefault(0);
 
 	xmlInitParser();
 	ctxt = htmlNewParserCtxt();
