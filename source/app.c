@@ -21,10 +21,11 @@ int main(int argc, char**argv) {
 	ctxt->sax->serror = &on_error;
 
 	xmlDoc* doc = htmlCtxtReadFd(ctxt,
-															 0,"","UTF8",
+															 0,"","UTF-8",
 															 HTML_PARSE_RECOVER |
 															 HTML_PARSE_NONET |
 															 HTML_PARSE_COMPACT);
+	htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
 	ensure_ne(NULL,doc)
 	html_when((xmlNode*)doc); // magic...
 	htmlSaveFile("/tmp/output.deleteme",doc);
