@@ -16,6 +16,7 @@ void find_start(struct Selector* s, xmlNode* top, const char* name) {
 }
 
 const char* namefor(xmlNode* n) {
+	if(n==NULL) return "(null)";
 	return n->name;
 }
 
@@ -26,12 +27,18 @@ xmlNode* find_next(struct Selector* pos) {
 	pos->next = NULL; // dunno it anymore
 	bool right(void) {
 		if(!cur->next) return false;
+		fprintf(stderr,"RIGHT %s->%s\n",
+						namefor(cur),
+						namefor(cur->next));
 		cur = cur->next;
 		return true;
 	}
 
 	bool down(void) {
 		if(!cur->children) return false;
+		fprintf(stderr,"DOWN %s->%s\n",
+						namefor(cur),
+						namefor(cur->children));
 		cur = cur->children;
 		return true;
 	}
