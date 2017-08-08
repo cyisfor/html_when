@@ -5,6 +5,24 @@
 
 
 int main(int argc, char**argv) {
+	htmlParserCtxt* ctxt;
+	xmlParserInputBufferPtr input;
+	xmlParserInputPtr stream;
+
+	xmlInitParser();
+	input = xmlParserInputBufferCreateFd(0, XML_CHAR_ENCODING_UTF8);
+	assert (input != NULL);
+	ctxt = htmlNewParserCtxt();
+	assert (ctxt != NULL);
+	ctxt->recovery = 1;
+	void	on_error(void * userData, xmlErrorPtr error) {
+		return;
+	}
+
+	ctxt->sax->serror = &on_error;
+	stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
+	assert(stream != NULL);
+	xmlPushInput(ctxt, input);
 	xmlDoc* doc = htmlReadFd(0,"","UTF-8",
 														HTML_PARSE_RECOVER |
 														HTML_PARSE_NONET |
