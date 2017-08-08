@@ -1,6 +1,5 @@
-PKG:=libxml
-CFLAGS+=-ggdb $(shell pkg-config --cflags $(PKG))
-LDLIBS+=$(shell pkg-config --libs $(PKG))
+CFLAGS+=-ggdb $(shell xml2-config --cflags)
+LDLIBS+=$(shell xml2-config --libs)
 
 test: source/app.c source/output.c libhtmlwhen.a
 	gcc $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
