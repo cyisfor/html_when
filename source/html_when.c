@@ -97,7 +97,7 @@ void html_when(xmlNode* root) {
 		} else {
 			// negative when clause
 			// remove nodes, until else, then move to parent
-			for(kid=cur->children;kid;kid = kid->next) {
+			for(kid=cur->children;kid;) {
 				if(kid->type == XML_ELEMENT_NODE) {
 					if(strcasecmp(kid->name,"else")==0) {
 						// remove this, move the rest to parent, checking for val
@@ -109,8 +109,10 @@ void html_when(xmlNode* root) {
 					}
 				}
 				// remove until else
+				xmlNode* next = kid->next;
 				xmlUnlinkNode(kid);
 				xmlFreeNode(kid);
+				kid = next;
 			}
 			while(kid) {
 				kid = replaceval(kid);
