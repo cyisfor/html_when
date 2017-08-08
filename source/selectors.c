@@ -60,7 +60,7 @@ xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 			if(check)
 				check = right();
 			if(!check) {
-				// can't go right, down, or up
+				// can't go right, down, or up/right
 				find_destroy(pos);
 				return NULL;
 			}
