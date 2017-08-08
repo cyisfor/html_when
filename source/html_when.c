@@ -11,11 +11,11 @@ void html_when(xmlNode* root) {
 	if(!root) return;
 
 	struct Selector selector = {};
-	find_start(&selector, root, "when");
-	for(;;) {
-		xmlNode* cur = find_next(&selector);
-		if(!cur) return;
-
+	find_start(&selector, "when");
+	xmlNode* cur;
+	for(cur = find_next(root, &selector);
+			cur;
+			cur = find_next(cur, &selector)) {
 		bool condition = false; // <when nonexistentvar> => else clause
 		const char* envval = NULL;
 		xmlAttr* a = cur->properties;
@@ -106,8 +106,10 @@ void html_when(xmlNode* root) {
 			}
 		}
 		// cur should be empty now
-		//xmlUnlinkNode(cur);
-		assert(cur != selector.next);
-		//xmlFreeNode(cur);
+		xmlNode* backtrack = cur->prev;
+		if(backtrack) backtrack = cur->parent;
+		xmlUnlinkNode(cur);
+		xmlFreeNode(cur);
+		cur = backtrack;
 	}
 }
