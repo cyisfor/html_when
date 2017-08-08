@@ -8,11 +8,9 @@
 static void find_destroy(struct Selector* s) {
 }
 
-void find_start(struct Selector* s, xmlNode* top, const char* name) {
+void find_start(struct Selector* s, const char* name) {
 	assert(s->last == DOWN);
-	assert(s->next == NULL);
 	s->name = name;
-	s->next = top;
 }
 
 const char* namefor(xmlNode* n) {
@@ -23,11 +21,8 @@ const char* namefor(xmlNode* n) {
 	return n->name;
 }
 
-xmlNode* find_next(struct Selector* pos) {
+xmlNode* find_next(xmlNode* cur, struct Selector* pos) {
 #define POS pos->data[pos->n-1]
-	assert(pos->next);
-	xmlNode* cur = pos->next;
-	pos->next = NULL; // dunno it anymore
 	bool right(void) {
 		if(!cur->next) return false;
 		fprintf(stderr,"RIGHT %s->%s\n",
@@ -56,8 +51,10 @@ xmlNode* find_next(struct Selector* pos) {
 	}
 		
 	for(;;) {
-		// can't return yet, have to go to the next one.
-		xmlNode* last = cur;
+		if(cur->type == XML_ELEMENT_NODE && strcasecmp(cur->name, pos->name)==0) {
+			fprintf(stderr,"found it!\n");
+			return cur;
+		}
 		switch(pos->last) {
 		case UP:
 			if(right()) pos->last = RIGHT;
@@ -75,10 +72,5 @@ xmlNode* find_next(struct Selector* pos) {
 			else if(up()) pos->last = UP;
 			else error(23,0,"couldn't move??");
 		};
-		if(last->type == XML_ELEMENT_NODE && strcasecmp(last->name, pos->name)==0) {
-			fprintf(stderr,"found it!\n");
-			pos->next = cur;
-			return last;
-		}
 	}
 }
