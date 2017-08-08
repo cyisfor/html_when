@@ -5,12 +5,12 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-
+#define LITLEN(a) (a),sizeof(a)-1
 int main(int argc, char**argv) {
 	htmlParserCtxt* ctxt = htmlCreatePushParserCtxt
 		(NULL,NULL,
 		 LITLEN("<!DOCTYPE html>\n<html><head/><body>\n"),
-		 "stdin",XML_CHAR_ENCODING_UTF8)
+		 "stdin",XML_CHAR_ENCODING_UTF8);
 	ctxt->recovery = 1;
 	void	on_error(void * userData, xmlErrorPtr error) {
 		fprintf(stderr,"um %s %s\n",error->message,
@@ -27,7 +27,7 @@ int main(int argc, char**argv) {
 
 	xmlParseChunk(ctxt,buf,info.st_size,0);
 	xmlParseChunk(ctxt,LITLEN("</body></html>"),1);
-	xmlDoc* doc = ctxt->doc;
+	xmlDoc* doc = ctxt->myDoc;
 	ensure_ne(NULL,doc)
 	html_when(doc->children);
 	htmlSaveFile("/tmp/output.deleteme",doc);
