@@ -106,7 +106,7 @@ void html_when(xmlNode* root) {
 			}
 		}
 		// cur should be empty now
-		xmlUnlinkNode(cur);
+		//xmlUnlinkNode(cur);
 		assert(cur != selector.next);
 		//xmlFreeNode(cur);
 	}
