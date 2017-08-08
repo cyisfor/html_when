@@ -8,8 +8,8 @@
 #include <assert.h>
 #include <stdbool.h>
 
-xmlNode* html_when(xmlNode* root) {
-	if(!root) return root;
+void html_when(xmlNode* root) {
+	if(!root) return;
 
 	struct Selector selector = {};
 	find_start(&selector, "when");
