@@ -18,15 +18,13 @@ int main(int argc, char**argv) {
 	void	on_error(void * userData, xmlErrorPtr error) {
 		return;
 	}
-
 	ctxt->sax->serror = &on_error;
-	stream = xmlNewIOInputStream(ctxt, input, XML_CHAR_ENCODING_NONE);
-	assert(stream != NULL);
-	xmlPushInput(ctxt, input);
-	xmlDoc* doc = htmlReadFd(0,"","UTF-8",
-														HTML_PARSE_RECOVER |
-														HTML_PARSE_NONET |
-														HTML_PARSE_COMPACT);
+
+	xmlDoc* doc = htmlCtxtReadFd(ctxt,
+															 0,"","UTF-8",
+															 HTML_PARSE_RECOVER |
+															 HTML_PARSE_NONET |
+															 HTML_PARSE_COMPACT);
 	ensure_ne(NULL,doc)
 	html_when(doc->children);
 	htmlSaveFile("/tmp/output.deleteme",doc);
