@@ -1,2 +1,2 @@
-#include "gumbo.h"
-void html_when(GumboNode* root);
+#include <libxml/HTMLparser.h>
+void html_when(htmlNode* root);

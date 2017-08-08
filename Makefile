@@ -1,5 +1,6 @@
-CFLAGS+=-ggdb -Igumbo-parser/src
-LDLIBS+=gumbo-parser/.libs/libgumbo.a
+PKG:=libxml2
+CFLAGS+=-ggdb $(shell pkg-config --cflags $(PKG))
+LDLIBS+=$(shell pkg-config --libs $(PKG))
 
 test: source/app.c source/output.c libhtmlwhen.a
 	gcc $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
