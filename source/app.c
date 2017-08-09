@@ -25,9 +25,8 @@ int main(int argc, char**argv) {
 															 HTML_PARSE_RECOVER |
 															 HTML_PARSE_NONET |
 															 HTML_PARSE_COMPACT);
-	// html5 please
-	doc->intSubset->ExternalID = NULL;
-		doc->intSubset->SystemID = NULL;
+	HTML5_plz(doc);
+
 	htmlNodeDumpFileFormat(stderr,doc,doc,"UTF-8",1);
 	ensure_ne(NULL,doc)
 	html_when((xmlNode*)doc); // magic...
