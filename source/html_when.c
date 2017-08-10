@@ -54,7 +54,7 @@ static xmlNode* found_when(xmlNode* cur) {
 			} else if(0 == strcasecmp(n->name,"when")) {
 				// should be impossible? we handle from bottom up!
 				perror("what?");
-				htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
+				//htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF-8",1);
 				abort();
 			} else {
 				xmlNode* kid = n->children;
@@ -121,7 +121,7 @@ static xmlNode* found_when(xmlNode* cur) {
 }
 
 xmlNode* html_when(xmlNode* root) {
-	if(!root) return;
+	if(!root) return NULL;
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
 		// breadth first so not reparsing when add to parent
