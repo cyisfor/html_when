@@ -1,3 +1,4 @@
+#include "libxmlfixes.h"
 #include "ensure.h"
 #include "html_when.h"
 #include <libxml/HTMLparser.h>
