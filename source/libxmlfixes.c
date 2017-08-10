@@ -85,7 +85,7 @@ xmlDoc* readFunky(int fd, const char* content) {
     } else {
 			struct stat info;
 			if(0 == fstat(fd,&info) && info.st_size > BUFSIZE) {
-				char* buf = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,0,0);
+				char* buf = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,fd,0);
 				close(fd); // don't close stdin? if(fd > 0) ...
 				assert(buf != MAP_FAILED);
 				htmlParseChunk(ctx,buf,info.st_size,0);
