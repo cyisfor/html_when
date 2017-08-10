@@ -10,13 +10,21 @@
 
 void html_when(xmlNode* root) {
 	if(!root) return;
+	switch(root->type) {
+	case XML_ELEMENT_NODE:
+	case XML_DOCUMENT_NODE:
+		// depth first so children never contain whens
+		html_when(root->childen);
+		html_when(root->next);
+		break;
+	default:
+		return;
+	};
 
-	struct Selector selector = {};
-	find_start(&selector, "when");
-	xmlNode* cur;
-	for(cur = find_next(root, &selector);
-			cur;
-			cur = find_next(cur, &selector)) {
+	if(!(root->type == XML_ELEMENT_NODE && (0==strcmp(root->name,"when"))))
+		return;
+	xmlNode* cur = root;
+
 		htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF8",1);
 		bool condition = false; // <when nonexistentvar> => else clause
 		const char* envval = NULL;
@@ -119,12 +127,7 @@ void html_when(xmlNode* root) {
 			}
 		}
 		// cur should be empty now
-		// don't check prev, since that's already been checked
-		// (it either was below us, or behind us)
-		xmlNode* backtrack = cur->next;
-		if(!backtrack) backtrack = cur->parent;
 		xmlUnlinkNode(cur);
 		xmlFreeNode(cur);
-		cur = backtrack;
 	}
 }
