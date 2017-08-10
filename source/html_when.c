@@ -13,18 +13,18 @@ void html_when(xmlNode* root) {
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
 	case XML_DOCUMENT_NODE:
-		// depth first so children never contain whens
 		html_when(root->children);
 		html_when(root->next);
-		break;
-	default:
-		return;
-	};
+	}
+	// breadth first so not re-parsing after adding to parent
 
-	if(!(root->type == XML_ELEMENT_NODE && (0==strcmp(root->name,"when"))))
-		return;
-	xmlNode* cur = root;
+	if(root->type == XML_ELEMENT_NODE && (0==strcmp(root->name,"when")))
+		found_when(root);
 
+}
+
+xmlNode* cur = root;
+static void found_when(xmlNode* cur) {
 //	htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF8",1);
 	bool condition = false; // <when nonexistentvar> => else clause
 	const char* envval = NULL;
