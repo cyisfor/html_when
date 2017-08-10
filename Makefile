@@ -9,7 +9,7 @@ libxml2/.libs/libxml2.a: libxml2/Makefile
 libxml2/Makefile: libxml2/configure
 	cd libxml2 && ./configure
 
-libxml2/configure:
+libxml2/configure: libxml2/configure.ac
 	cd libxml2 && sh autogen.sh --help
 
 libhtmlwhen.a: o/libxmlfixes.o o/html_when.o o/selectors.o | o
