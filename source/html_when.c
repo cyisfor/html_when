@@ -8,20 +8,6 @@
 #include <assert.h>
 #include <stdbool.h>
 
-bool html_when(xmlNode* root) {
-	if(!root) return;
-	switch(root->type) {
-	case XML_ELEMENT_NODE:
-		// breadth first so not reparsing when add to parent
-		if((0==strcmp(root->name,"when")))
-			root = found_when(root);
-	case XML_DOCUMENT_NODE:
-		root = html_when(root->children);
-		root = html_when(root->next);
-	};
-	return root;
-}
-
 static xmlNode* found_when(xmlNode* cur) {
 //	htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF8",1);
 	bool condition = false; // <when nonexistentvar> => else clause
@@ -132,4 +118,18 @@ static xmlNode* found_when(xmlNode* cur) {
 	xmlUnlinkNode(cur);
 	xmlFreeNode(cur);
 	return backtrack;	
+}
+
+xmlNode* html_when(xmlNode* root) {
+	if(!root) return;
+	switch(root->type) {
+	case XML_ELEMENT_NODE:
+		// breadth first so not reparsing when add to parent
+		if((0==strcmp(root->name,"when")))
+			root = found_when(root);
+	case XML_DOCUMENT_NODE:
+		root = html_when(root->children);
+		root = html_when(root->next);
+	};
+	return root;
 }
