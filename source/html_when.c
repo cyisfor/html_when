@@ -12,15 +12,13 @@ void html_when(xmlNode* root) {
 	if(!root) return;
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
+		// breadth first so not reparsing when add to parent
+		if((0==strcmp(root->name,"when")))
+			found_when(root);
 	case XML_DOCUMENT_NODE:
 		html_when(root->children);
 		html_when(root->next);
 	}
-	// breadth first so not re-parsing after adding to parent
-
-	if(root->type == XML_ELEMENT_NODE && (0==strcmp(root->name,"when")))
-		found_when(root);
-
 }
 
 xmlNode* cur = root;
