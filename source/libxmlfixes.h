@@ -6,3 +6,4 @@ xmlNode* findOrCreate(xmlNode* parent, const char* path);
 void foreachNode(xmlNode* parent, const char* name, void (*handle)(xmlNode*,void*), void* ctx);
 xmlDoc* readFunky(int fd, const char* content, size_t len);
 xmlDoc* strFunky(const char* content, size_t len);
+void HTML5_plz(xmlDoc* doc);

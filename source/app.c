@@ -28,7 +28,7 @@ int main(int argc, char**argv) {
 															 HTML_PARSE_COMPACT);
 	HTML5_plz(doc);
 
-	htmlNodeDumpFileFormat(stderr,doc,doc,"UTF-8",1);
+	htmlNodeDumpFileFormat(stderr,doc,(xmlNode*)doc,"UTF-8",1);
 	ensure_ne(NULL,doc)
 	html_when((xmlNode*)doc); // magic...
 	htmlSaveFileEnc("/tmp/output.deleteme",doc,"UTF-8");
