@@ -68,7 +68,7 @@ void HTML5_plz(xmlDoc* doc) {
 /* read a HTML document that isn't necessarily well formed,
 	 or use content as doc */
 
-xmlDoc* readFunky(int fd, const char* content) {
+xmlDoc* strFunky(const char* content, size_t len) {
     htmlParserCtxtPtr ctx;
     ctx = htmlCreatePushParserCtxt(NULL, NULL,
                                    "",0,"htmlish.xml",
@@ -80,26 +80,7 @@ xmlDoc* readFunky(int fd, const char* content) {
 					   HTML_PARSE_RECOVER
 					   );
     htmlParseChunk(ctx, HEADER, sizeof(HEADER)-1, 0);
-    if(fd<0) {
-        htmlParseChunk(ctx,content,strlen(content),0);
-    } else {
-			struct stat info;
-			if(0 == fstat(fd,&info) && info.st_size > BUFSIZE) {
-				char* buf = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,fd,0);
-				close(fd); // don't close stdin? if(fd > 0) ...
-				assert(buf != MAP_FAILED);
-				htmlParseChunk(ctx,buf,info.st_size,0);
-				munmap(buf,info.st_size);
-			} else {
-				char buf[BUFSIZE];
-        for(;;) {
-            ssize_t amt = read(fd,buf,BUFSIZE);
-            if(amt<=0) break;
-            htmlParseChunk(ctx, buf, amt, 0);
-        }
-			}
-    }
-
+		htmlParseChunk(ctx,content,strlen(content),0);
     htmlParseChunk(ctx,FOOTER,sizeof(FOOTER)-1, 1);
     xmlDoc* doc = ctx->myDoc;
 		HTML5_plz(doc);
@@ -109,6 +90,27 @@ xmlDoc* readFunky(int fd, const char* content) {
     xmlFreeParserCtxt(ctx);
     libxml2SUCKS(doc->children);
     return doc;
+}
+
+xmlDoc* readFunky(int fd, const char* content, size_t clen) {
+	if(fd<0) {
+		return strFunky(content,clen);
+	} else {
+		struct stat info;
+		if(0 == fstat(fd,&info) && info.st_size > BUFSIZE) {
+			char* buf = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,fd,0);
+			close(fd); // don't close stdin? if(fd > 0) ...
+			assert(buf != MAP_FAILED);
+			xmlDoc* ret = strFunky(buf,info.st_size);
+			munmap(buf,info.st_size);
+			return ret;
+		} else {
+			char buf[0x10000];
+			ssize_t amt = read(fd,buf,0x10000);
+			assert(amt < 0x10000);
+			return strFunky(buf,amt);
+		}
+	}
 }
 
 xmlNode* fuckXPath(xmlNode* parent, const char* name) {
