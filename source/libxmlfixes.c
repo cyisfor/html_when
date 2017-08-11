@@ -80,7 +80,7 @@ xmlDoc* strFunky(const char* content, size_t len) {
 					   HTML_PARSE_RECOVER
 					   );
     htmlParseChunk(ctx, HEADER, sizeof(HEADER)-1, 0);
-		htmlParseChunk(ctx,content,strlen(content),0);
+		htmlParseChunk(ctx,content,len,0);
     htmlParseChunk(ctx,FOOTER,sizeof(FOOTER)-1, 1);
     xmlDoc* doc = ctx->myDoc;
 		HTML5_plz(doc);
@@ -107,6 +107,7 @@ xmlDoc* readFunky(int fd, const char* content, size_t clen) {
 		} else {
 			char buf[0x10000];
 			ssize_t amt = read(fd,buf,0x10000);
+			close(fd);
 			assert(amt < 0x10000);
 			return strFunky(buf,amt);
 		}
