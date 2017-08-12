@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include "libxmlfixes.h"
 #include <libxml/HTMLparser.h>
 #include <assert.h>
@@ -174,3 +175,18 @@ void foreachNode(xmlNode* parent, const char* name, void (*handle)(xmlNode*,void
         cur = next;
     }
 }
+
+// somepony with a db define this!
+extern bool is_cool(const char* tag, size_t tlen);
+
+void cool_xml_error_handler(void * userData, xmlErrorPtr error) {
+	if(error->code == XML_HTML_UNKNOWN_TAG) {
+		const char* name = error->str1;
+		size_t nlen = strlen(name);
+		if(is_cool(name,nlen)) return;
+	}
+	fprintf(stderr,"um %s %s\n",error->message,
+					error->level == XML_ERR_FATAL ? "fatal..." : "ok");
+}
+
+	
