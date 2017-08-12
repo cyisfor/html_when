@@ -1,2 +1,2 @@
 #include <libxml/HTMLparser.h>
-xmlNode* html_when(xmlNode* root);
+void html_when(xmlNode* root);

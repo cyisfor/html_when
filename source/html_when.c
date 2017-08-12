@@ -119,8 +119,8 @@ static xmlNode* found_when(xmlNode* cur) {
 	return backtrack;	
 }
 
-xmlNode* html_when(xmlNode* root) {
-	if(!root) return NULL;
+void html_when(xmlNode* root) {
+	if(!root) return;
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
 		printf("element %s\n",root->name);
@@ -130,7 +130,7 @@ xmlNode* html_when(xmlNode* root) {
 		}
 	case XML_DOCUMENT_NODE:
 	case XML_HTML_DOCUMENT_NODE:
-		root = html_when(root->children);
+		html_when(root->children);
 	};
 	return html_when(root->next);
 }
