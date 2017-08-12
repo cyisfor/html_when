@@ -9,7 +9,7 @@
 #include <stdbool.h>
 
 static xmlNode* found_when(xmlNode* cur) {
-//	htmlNodeDumpFileFormat(stderr,root->doc,root,"UTF8",1);
+	htmlNodeDumpFileFormat(stderr,cur->doc,cur,"UTF8",1);
 	bool condition = false; // <when nonexistentvar> => else clause
 	const char* envval = NULL;
 	xmlAttr* a = cur->properties;
