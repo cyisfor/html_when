@@ -123,7 +123,6 @@ void html_when(xmlNode* root) {
 	if(!root) return;
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
-		printf("element %s\n",root->name);
 		// breadth first so not reparsing when add to parent
 		if((0==strcmp(root->name,"when"))) {
 			return html_when(found_when(root));
