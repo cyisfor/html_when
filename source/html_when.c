@@ -9,8 +9,6 @@
 #include <stdbool.h>
 
 static xmlNode* found_when(xmlNode* cur) {
-	puts("found when");
-	htmlNodeDumpFileFormat(stderr,cur->doc,cur,"UTF8",1);
 	bool condition = false; // <when nonexistentvar> => else clause
 	const char* envval = NULL;
 	xmlAttr* a = cur->properties;
@@ -125,12 +123,14 @@ xmlNode* html_when(xmlNode* root) {
 	if(!root) return NULL;
 	switch(root->type) {
 	case XML_ELEMENT_NODE:
+		printf("element %s\n",root->name);
 		// breadth first so not reparsing when add to parent
 		if((0==strcmp(root->name,"when"))) {
 			return html_when(found_when(root));
 		}
 	case XML_DOCUMENT_NODE:
 		root = html_when(root->children);
+	default:
 		root = html_when(root->next);
 	};
 	return root;
