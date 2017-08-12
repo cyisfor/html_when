@@ -99,7 +99,6 @@ xmlDoc* readFunky(int fd, const char* content, size_t clen) {
 		struct stat info;
 		if(0 == fstat(fd,&info) && info.st_size > BUFSIZE) {
 			char* buf = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,fd,0);
-			close(fd); // don't close stdin? if(fd > 0) ...
 			assert(buf != MAP_FAILED);
 			xmlDoc* ret = strFunky(buf,info.st_size);
 			munmap(buf,info.st_size);
@@ -107,7 +106,6 @@ xmlDoc* readFunky(int fd, const char* content, size_t clen) {
 		} else {
 			char buf[0x10000];
 			ssize_t amt = read(fd,buf,0x10000);
-			close(fd);
 			assert(amt < 0x10000);
 			return strFunky(buf,amt);
 		}
