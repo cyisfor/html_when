@@ -8,5 +8,3 @@ xmlDoc* readFunky(int fd, const char* content, size_t len);
 xmlDoc* strFunky(const char* content, size_t len);
 void HTML5_plz(xmlDoc* doc);
 
-char is_cool_xml_tag(const char* tag, size_t tlen);
-void cool_xml_error_handler(void * userData, xmlErrorPtr error);
