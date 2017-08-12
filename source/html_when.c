@@ -129,9 +129,8 @@ xmlNode* html_when(xmlNode* root) {
 			return html_when(found_when(root));
 		}
 	case XML_DOCUMENT_NODE:
+	case XML_HTML_DOCUMENT_NODE:
 		root = html_when(root->children);
-	default:
-		root = html_when(root->next);
 	};
-	return root;
+	return html_when(root->next);
 }
