@@ -7,6 +7,10 @@ N=app
 example: $O libhtmlwhen.a libxml2/.libs/libxml2.a
 	$(LINK)
 
+N=test
+test: $O libhtmlwhen.a libxml2/.libs/libxml2.a
+	$(LINK)
+
 define AUTOMAKE_SUBPROJECT
 $1/.libs/$2.a: $1/Makefile
 	cd $1 && make
