@@ -125,8 +125,8 @@ void html_when(xmlNode* root) {
 	case XML_ELEMENT_NODE:
 		// breadth first so not reparsing when add to parent
 		if((0==strcmp(root->name,"when"))) {
-			html_when(found_when(root));
-			return html_when(root->next);
+			/* start over from new root, which may get children of it, and will continue on next */
+			return html_when(found_when(root));
 		}
 	case XML_DOCUMENT_NODE:
 	case XML_HTML_DOCUMENT_NODE:
