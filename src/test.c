@@ -31,7 +31,7 @@ int main(int argc, char**argv) {
 		size_t len = strlen(ent->d_name);
 		if(len < 5) continue;
 		if(0!=strcmp(ent->d_name+len-5,".html")) continue;
-		fputs(end->d_name,stdout);
+		fputs(ent->d_name,stdout);
 		fputs("...",stdout);
 		fflush(stdout);
 		char* test = NULL;
