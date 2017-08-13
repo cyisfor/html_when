@@ -2,15 +2,16 @@ CFLAGS+=-ggdb -Ilibxml2/include/ -Inote/
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N)
-
+OO=$O $L
+L=note/note libhtmlwhen.a libxml2/.libs/libxml2.a
 all: example test
 
 N=app
-example: $O libhtmlwhen.a libxml2/.libs/libxml2.a
+example: $(OO)
 	$(LINK)
 
-N=test note/note
-test: $O libhtmlwhen.a libxml2/.libs/libxml2.a
+N=test
+test: $(OO)
 	$(LINK)
 
 define AUTOMAKE_SUBPROJECT
@@ -27,7 +28,7 @@ endef
 $(eval $(call AUTOMAKE_SUBPROJECT, libxml2, libxml2))
 
 N=libxmlfixes html_when selectors
-libhtmlwhen.a: $O
+libhtmlwhen.a: $(O)
 	$(AR) $(ARFLAGS) $@ $^
 
 o:
