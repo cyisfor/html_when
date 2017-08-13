@@ -136,7 +136,7 @@ void html_when(xmlNode* root) {
 }
 
 bool html_when_handled_error(xmlErrorPtr error) {
-	if(error != XML_HTML_UNKNOWN_TAG) return false;
+	if(error->code != XML_HTML_UNKNOWN_TAG) return false;
 	const xmlChar* name = error->str1;
 	size_t len = strlen(name);
 	if(len != 4) return false;
