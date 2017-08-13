@@ -19,6 +19,14 @@
 DECLARE_CLEANUP(closedir,DIR*);
 DECLARE_CLEANUP(close,int);
 DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
+// special: have to define an inline function named unmap after every info stat struct
+DECLARE_CLEANUP(unmap,void*);
+
+#define DECLARE_UNMAP(info) void unmap(void* mem) { \
+		int res = munmap(mem,info.st_size);							\
+		assert(res == 0);																\
+	}
+
 
 int main(int argc, char**argv) {
 	ensure0(chdir("tests"));
@@ -33,7 +41,10 @@ int main(int argc, char**argv) {
 		size_t len = strlen(ent->d_name);
 		if(len < 5) continue;
 		if(0!=strcmp(ent->d_name+len-5,".html")) continue;
-		fputs(ent->d_name,stdout);
+		char* name = alloca(len-4);
+		memcpy(name,ent->d_name,len-5);
+		name[len-5] = '\0'
+		fputs(name,stdout);
 		fputs("...",stdout);
 		fflush(stdout);
 		xmlChar* test = NULL;
@@ -67,8 +78,46 @@ int main(int argc, char**argv) {
 		}
 		assert(0==fstat(efd,&info));
 
+		{
+			cleanup(close) int e = openat(env,name,O_DIRECTORY|O_PATH);
+			struct stat info;
+			DECLARE_UNMAP(info);
+			if(e >= 0) {
+				assert(0==fstat(efd,&info));
+				cleanup(unmap) char* mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
+				assert(mem != MAP_FAILED);
+				char* start = mem;
+				for(;;) {
+					char* eq = memchr(start,'='.info.st_size-(start-mem));
+					if(eq == NULL) {
+						if(start != mem + info.st_size) {
+							WARN("trailing data... %.*s",info.st_size-(start-mem), start);
+						}
+						break;
+					}
+					size_t nlen = eq-start;
+					++eq;
+					char* end = memchr(eq,'\n',info.st_size-(eq-mem));
+					size_t vlen;
+					if(end == NULL) {
+						// no trailing newline
+						vlen = info.st_size-(eq-mem);
+					}
+					info("set env %.*s %.*s",nlen,start,vlen,eq);
+					char* name = alloca(nlen+1);
+					char* value = alloca(vlen+1);
+					memcpy(name,start,nlen);
+					name[nlen] = '\0';
+					memcpy(value,eq,vlen);
+					value[vlen] = '\0';
+					setenv(name,value,1);
+				}
+						
+					
+
 		ensure_eq(tlen,info.st_size);
-		xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
+		DECLARE_UNMAP(info);
+		cleanup(unmap) xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
 		puts("passed");
