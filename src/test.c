@@ -20,12 +20,11 @@ DECLARE_CLEANUP(closedir,DIR*);
 DECLARE_CLEANUP(close,int);
 DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 // special: have to define an inline function named unmap after every info stat struct
-DECLARE_CLEANUP(unmap,void*);
-
 #define DECLARE_UNMAP(info) void unmap(void* mem) { \
 		int res = munmap(mem,info.st_size);							\
 		assert(res == 0);																\
-	}
+	}																									\
+	DECLARE_CLEANUP(unmap,void*)
 
 
 int main(int argc, char**argv) {
@@ -43,7 +42,7 @@ int main(int argc, char**argv) {
 		if(0!=strcmp(ent->d_name+len-5,".html")) continue;
 		char* name = alloca(len-4);
 		memcpy(name,ent->d_name,len-5);
-		name[len-5] = '\0'
+		name[len-5] = '\0';
 		fputs(name,stdout);
 		fputs("...",stdout);
 		fflush(stdout);
