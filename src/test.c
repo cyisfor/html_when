@@ -49,6 +49,13 @@ int main(int argc, char**argv) {
 	cleanup(close) int env = open("env",O_DIRECTORY|O_PATH);
 	assert(env >= 0);
 	struct dirent* ent;
+
+	void on_error(void * userData, xmlErrorPtr error) {
+		if(html_when_handled_error(error)) return;
+		WARN("xml error %s",error->message);
+	}
+	xmlSetStructuredErrorFunc(NULL,on_error);
+	
 	while(ent = readdir(d)) {
 		size_t len = strlen(ent->d_name);
 		if(len < 5) continue;
