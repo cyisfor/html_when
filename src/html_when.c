@@ -136,14 +136,25 @@ void html_when(xmlNode* root) {
 }
 
 bool html_when_handled_error(xmlErrorPtr error) {
-	if(error->code != XML_HTML_UNKNOWN_TAG) return false;
-	const xmlChar* name = error->str1;
-	size_t len = strlen(name);
-	if(len == 3) {
-		return 0 == memcmp(name,"val",3);
+	switch(error->code) {
+	case XML_HTML_UNKNOWN_TAG: {
+		const xmlChar* name = error->str1;
+		size_t len = strlen(name);
+		if(len == 3) {
+			return 0 == memcmp(name,"val",3);
+		}
+		if(len != 4) return false;
+		if(0==memcmp(name,"when",4)) return true;
+		if(0==memcmp(name,"else",4)) return true;
+		return false;
 	}
-	if(len != 4) return false;
-	if(0==memcmp(name,"when",4)) return true;
-	if(0==memcmp(name,"else",4)) return true;
-	return false;
+	case XML_ERR_ATTRIBUTE_REDEFINED: {
+		const xmlChar* attr = error->str1;
+		size_t len = strlen(attr);
+		if(len == 3 && memcmp(name,"not",3)) return true;
+		return false;
+	}
+	default:
+		return false;
+	};
 }
