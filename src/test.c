@@ -24,7 +24,7 @@ DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 #define CONCAT(a,b) CONCAT2(a,b)
 // special: have to define an inline function named unmap after every info stat struct
 #define UNMAP(info,type) void CONCAT(unmap,__LINE__)(type* mem) { \
-		int res = munmap(mem,info.st_size);							\
+		int res = munmap(*mem,info.st_size);							\
 		assert(res == 0);																\
 	}																									\
 	__attribute__((__cleanup__(CONCAT(unmap,__LINE__)))) type
