@@ -3,7 +3,7 @@ LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N)
 
-N=app.c
+N=app
 example: $O libhtmlwhen.a libxml2/.libs/libxml2.a
 	$(LINK)
 
@@ -27,5 +27,5 @@ libhtmlwhen.a: $O
 o:
 	mkdir $@
 
-o/%.o: source/%.c | o
+o/%.o: src/%.c | o
 	gcc $(CFLAGS) -c -o $@ $^
