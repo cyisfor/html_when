@@ -6,9 +6,16 @@
 
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <sys/mman.h> // mmap
+#include <sys/stat.h>
+
 #include <assert.h>
+#include <dirent.h>
+#include <unistd.h> // close
 
 DECLARE_CLEANUP(closedir,DIR*);
+DECLARE_CLEANUP(close,int);
+DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 
 int main(int argc, char**argv) {
 	ensure0(chdir("tests"));
