@@ -1,4 +1,4 @@
-CFLAGS+=-ggdb -Ilibxml2/include/
+CFLAGS+=-ggdb -Ilibxml2/include/ -Inote/
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N)
@@ -9,7 +9,7 @@ N=app
 example: $O libhtmlwhen.a libxml2/.libs/libxml2.a
 	$(LINK)
 
-N=test
+N=test note/note
 test: $O libhtmlwhen.a libxml2/.libs/libxml2.a
 	$(LINK)
 
