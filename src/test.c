@@ -26,6 +26,8 @@ int main(int argc, char**argv) {
 	assert(d);
 	cleanup(close) int expected = open("results",O_DIRECTORY|O_PATH);
 	assert(expected >= 0);
+	cleanup(close) int env = open("env",O_DIRECTORY|O_PATH);
+	assert(env >= 0);
 	struct dirent* ent;
 	while(ent = readdir(d)) {
 		size_t len = strlen(ent->d_name);
@@ -67,7 +69,7 @@ int main(int argc, char**argv) {
 
 		ensure_eq(tlen,info.st_size);
 		char* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
-		assert(expected != MAP_PRIVATE);
+		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
 		puts("passed");
 	}

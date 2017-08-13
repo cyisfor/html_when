@@ -1,4 +1,4 @@
-#define DECLARE_CLEANUP(name,type) static inline void cleanup_ ## name(type* v) { name(*v); *v = 0; }
+#define DECLARE_CLEANUP(name,type) static inline void cleanup_ ## name(type* v) { puts("cleanup " #name); name(*v); *v = 0; }
 //#include <stdio.h>
 //DECLARE_CLEANUP(fclose,FILE*);
 //#include <unistd.h>
