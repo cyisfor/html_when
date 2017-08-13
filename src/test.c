@@ -20,11 +20,11 @@ DECLARE_CLEANUP(closedir,DIR*);
 DECLARE_CLEANUP(close,int);
 DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 // special: have to define an inline function named unmap after every info stat struct
-#define DECLARE_UNMAP(info) void unmap(void* mem) { \
+#define UNMAP(info) void unmap(void** mem) { \
 		int res = munmap(mem,info.st_size);							\
 		assert(res == 0);																\
 	}																									\
-	DECLARE_CLEANUP(unmap,void*)
+	__attribute__(__cleanup__(unmap))
 
 
 int main(int argc, char**argv) {
@@ -80,10 +80,9 @@ int main(int argc, char**argv) {
 		{
 			cleanup(close) int e = openat(env,name,O_DIRECTORY|O_PATH);
 			struct stat info;
-			DECLARE_UNMAP(info);
 			if(e >= 0) {
 				assert(0==fstat(efd,&info));
-				cleanup(unmap) char* mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
+				UNMAP(info) char* mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
 				assert(mem != MAP_FAILED);
 				char* start = mem;
 				for(;;) {
@@ -115,8 +114,7 @@ int main(int argc, char**argv) {
 					
 
 		ensure_eq(tlen,info.st_size);
-		DECLARE_UNMAP(info);
-		cleanup(unmap) xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
+		UNMAP(info) xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
 		puts("passed");
