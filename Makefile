@@ -3,7 +3,7 @@ LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N)
 OO=$O $L
-L=note/note libhtmlwhen.a libxml2/.libs/libxml2.a
+L=o/note/note.o libhtmlwhen.a libxml2/.libs/libxml2.a
 all: example test
 
 N=app
