@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <dirent.h>
 #include <unistd.h> // close
+#include <errno.h> // ENOENT
 
 DECLARE_CLEANUP(closedir,DIR*);
 DECLARE_CLEANUP(close,int);
