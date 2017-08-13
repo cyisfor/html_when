@@ -36,7 +36,7 @@ int main(int argc, char**argv) {
 		fputs(ent->d_name,stdout);
 		fputs("...",stdout);
 		fflush(stdout);
-		char* test = NULL;
+		xmlChar* test = NULL;
 		int tlen;
 		{
 			cleanup(xmlFreeDoc) xmlDoc* doc = ({
@@ -68,7 +68,7 @@ int main(int argc, char**argv) {
 		assert(0==fstat(efd,&info));
 
 		ensure_eq(tlen,info.st_size);
-		char* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
+		xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
 		puts("passed");
