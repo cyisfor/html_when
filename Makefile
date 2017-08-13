@@ -7,14 +7,18 @@ N=app.c
 example: $O libhtmlwhen.a libxml2/.libs/libxml2.a
 	$(LINK)
 
-libxml2/.libs/libxml2.a: libxml2/Makefile
-	cd libxml2 && make
+define AUTOMAKE_SUBPROJECT
+$1/.libs/$2.a: $1/Makefile
+	cd $1 && make
 
-libxml2/Makefile: libxml2/configure
-	cd libxml2 && ./configure
+$1/Makefile: $1/configure
+	cd $1 && ./configure
 
-libxml2/configure: libxml2/configure.ac
-	cd libxml2 && sh autogen.sh --help
+$1/configure: $1/configure.ac
+	cd $1 && sh autogen.sh --help
+endef
+
+$(eval $(call AUTOMAKE_SUBPROJECT, libxml2, libxml2))
 
 N=libxmlfixes html_when selectors
 libhtmlwhen.a: $O
