@@ -34,7 +34,7 @@ libhtmlwhen.a: $(O)
 o:
 	mkdir $@
 
-COMPILE=$(CC) $(CFLAGS) -c -o $@ $^
+COMPILE=$(CC) $(CFLAGS) -c -o $@ $<
 
 o/%.o: src/%.c libxml2/include/xmlversion.h | o
 	$(COMPILE)
