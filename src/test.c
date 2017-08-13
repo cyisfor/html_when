@@ -141,6 +141,6 @@ int main(int argc, char**argv) {
 		UNMAP(info,xmlChar*) expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
-		puts("passed");
+		puts(" passed");
 	}
 }

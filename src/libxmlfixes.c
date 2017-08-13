@@ -87,9 +87,6 @@ xmlDoc* strFunky(const char* content, size_t len) {
     htmlParseChunk(ctx,FOOTER,sizeof(FOOTER)-1, 1);
     xmlDoc* doc = ctx->myDoc;
 		HTML5_plz(doc);
-    if(!ctx->wellFormed) {
-        fprintf(stderr,"Warning: not well formed.\n");
-    }
     xmlFreeParserCtxt(ctx);
     libxml2SUCKS(doc->children);
     return doc;
