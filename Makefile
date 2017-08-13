@@ -33,5 +33,12 @@ libhtmlwhen.a: $O
 o:
 	mkdir $@
 
+COMPILE=$(CC) $(CFLAGS) -c -o $@ $^
+
 o/%.o: src/%.c | o
-	gcc $(CFLAGS) -c -o $@ $^
+	$(COMPILE)
+
+
+o/%.o: %.c | o
+	mkdir -p `dirname $@`
+	$(COMPILE)
