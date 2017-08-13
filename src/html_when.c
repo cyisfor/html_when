@@ -151,7 +151,7 @@ bool html_when_handled_error(xmlErrorPtr error) {
 	case XML_ERR_ATTRIBUTE_REDEFINED: {
 		const xmlChar* attr = error->str1;
 		size_t len = strlen(attr);
-		if(len == 3 && memcmp(name,"not",3)) return true;
+		if(len == 3 && 0==memcmp(attr,"not",3)) return true;
 		return false;
 	}
 	default:
