@@ -76,9 +76,11 @@ xmlDoc* strFunky(const char* content, size_t len) {
 								   XML_CHAR_ENCODING_UTF8);
     assert(ctx);
     htmlCtxtUseOptions(ctx,
-					   HTML_PARSE_NONET |
-					   HTML_PARSE_COMPACT |
-					   HTML_PARSE_RECOVER
+											 HTML_PARSE_NONET |
+											 HTML_PARSE_COMPACT |
+											 HTML_PARSE_RECOVER |
+											 HTML_PARSE_NOWARNING
+											 /* since warnings can't be filtered, just ignore them */
 					   );
     htmlParseChunk(ctx, HEADER, sizeof(HEADER)-1, 0);
 		htmlParseChunk(ctx,content,len,0);
