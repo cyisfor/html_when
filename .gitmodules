@@ -2,3 +2,6 @@
 	path = libxml2
 	url = git://git.gnome.org/libxml2
 	ignore = untracked
+[submodule "note"]
+	path = note
+	url = ./note

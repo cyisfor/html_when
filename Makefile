@@ -36,10 +36,10 @@ o:
 
 COMPILE=$(CC) $(CFLAGS) -c -o $@ $^
 
-o/%.o: src/%.c | o
+o/%.o: src/%.c libxml2/include/xmlversion.h | o
 	$(COMPILE)
 
 
-o/%.o: %.c | o
+o/%.o: %.c libxml2/include/xmlversion.h | o
 	mkdir -p `dirname $@`
 	$(COMPILE)
