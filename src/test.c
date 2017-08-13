@@ -20,11 +20,11 @@ DECLARE_CLEANUP(closedir,DIR*);
 DECLARE_CLEANUP(close,int);
 DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 // special: have to define an inline function named unmap after every info stat struct
-#define UNMAP(info) void unmap(void** mem) { \
+#define UNMAP(info) void unmap(char** mem) { \
 		int res = munmap(mem,info.st_size);							\
 		assert(res == 0);																\
 	}																									\
-	__attribute__(__cleanup__(unmap))
+	__attribute__((__cleanup__(unmap)))
 
 
 int main(int argc, char**argv) {
@@ -86,7 +86,7 @@ int main(int argc, char**argv) {
 				assert(mem != MAP_FAILED);
 				char* start = mem;
 				for(;;) {
-					char* eq = memchr(start,'='.info.st_size-(start-mem));
+					char* eq = memchr(start,'=',info.st_size-(start-mem));
 					if(eq == NULL) {
 						if(start != mem + info.st_size) {
 							WARN("trailing data... %.*s",info.st_size-(start-mem), start);
