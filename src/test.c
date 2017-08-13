@@ -9,6 +9,9 @@
 #include <sys/mman.h> // mmap
 #include <sys/stat.h>
 
+#include <fcntl.h> // open, O_*
+#include <string.h>
+
 #include <assert.h>
 #include <dirent.h>
 #include <unistd.h> // close
@@ -21,7 +24,7 @@ int main(int argc, char**argv) {
 	ensure0(chdir("tests"));
 	cleanup(closedir) DIR* d = opendir(".");
 	assert(d);
-	cleanup(close) int expected = open("results",O_DIR|O_PATH);
+	cleanup(close) int expected = open("results",O_DIRECTORY|O_PATH);
 	assert(expected >= 0);
 	struct dirent* ent;
 	while(ent = readdir(d)) {
