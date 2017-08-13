@@ -22,11 +22,11 @@ DECLARE_CLEANUP(xmlFreeDoc,xmlDoc*);
 #define CONCAT2(a,b) a ## b
 #define CONCAT(a,b) CONCAT2(a,b)
 // special: have to define an inline function named unmap after every info stat struct
-#define UNMAP(info) void CONCAT(unmap,__LINE__)(void** mem) { \
+#define UNMAP(info,type) void CONCAT(unmap,__LINE__)(type* mem) { \
 		int res = munmap(mem,info.st_size);							\
 		assert(res == 0);																\
 	}																									\
-	__attribute__((__cleanup__(CONCAT(unmap,__LINE__))))
+	__attribute__((__cleanup__(CONCAT(unmap,__LINE__)))) type
 
 
 int main(int argc, char**argv) {
@@ -84,7 +84,7 @@ int main(int argc, char**argv) {
 			struct stat info;
 			if(e >= 0) {
 				assert(0==fstat(efd,&info));
-				UNMAP(info) char* mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
+				UNMAP(info,char*) mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
 				assert(mem != MAP_FAILED);
 				char* start = mem;
 				for(;;) {
@@ -116,7 +116,7 @@ int main(int argc, char**argv) {
 					
 
 		ensure_eq(tlen,info.st_size);
-		UNMAP(info) xmlChar* expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
+		UNMAP(info,xmlChar*) expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
 		ensure_eq(0,memcmp(test,expected,tlen));
 		puts("passed");
