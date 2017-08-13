@@ -6,22 +6,16 @@
 #include <assert.h>
 
 int main(int argc, char**argv) {
-	htmlParserCtxt* ctxt;
-	xmlSubstituteEntitiesDefault(0);
-
-	xmlInitParser();
-	ctxt = htmlNewParserCtxt();
-	assert (ctxt != NULL);
-	ctxt->recovery = 1;
-	void	on_error(void * userData, xmlErrorPtr error) {
-		fprintf(stderr,"um %s %s\n",error->message,
-						error->level == XML_ERR_FATAL ? "fatal..." : "ok");
-		return;
-	}
-	xmlSetStructuredErrorFunc(NULL,on_error);
-	ctxt->sax->serror = &on_error;
-
-	xmlDoc* doc = htmlCtxtReadFd(ctxt,
+	ensure0(chdir("tests"));
+	DIR* d = opendir(".");
+	assert(d);
+	struct dirent* ent;
+	while(ent = readdir(d)) {
+		size_t len = strlen(ent.d_name);
+		if(len < 5) continue;
+		if(0!=strcmp(d_name+len-5,".html")) continue;
+		
+		xmlDoc* doc = htmlCtxtReadFd(ctxt,
 															 0,"","UTF-8",
 															 HTML_PARSE_RECOVER |
 															 HTML_PARSE_NONET |
