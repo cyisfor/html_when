@@ -34,6 +34,16 @@ int main(int argc, char**argv) {
 	cleanup(closedir) DIR* d = opendir(".");
 	assert(d);
 	cleanup(close) int expected = open("results",O_DIRECTORY|O_PATH);
+	if(expected < 0); {
+		if(errno == ENOENT) {
+			int res = mkdir("results",0755);
+			assert(res == 0);
+			expected = open("results",O_DIRECTORY|O_PATH);
+		} else {
+			perror("fail");
+			abort();
+		}
+	}
 	assert(expected >= 0);
 	cleanup(close) int env = open("env",O_DIRECTORY|O_PATH);
 	assert(env >= 0);
