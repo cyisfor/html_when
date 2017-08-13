@@ -16,7 +16,7 @@ test: $(OO)
 
 define AUTOMAKE_SUBPROJECT
 $1/.libs/$2.a: $1/Makefile
-	cd $1 && make
+	$(MAKE) -C $1
 
 $1/Makefile: $1/configure
 	cd $1 && ./configure
