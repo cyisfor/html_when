@@ -103,7 +103,7 @@ int main(int argc, char**argv) {
 						// no trailing newline
 						vlen = info.st_size-(eq-mem);
 					}
-					info("set env %.*s %.*s",nlen,start,vlen,eq);
+					INFO("set env %.*s %.*s",nlen,start,vlen,eq);
 					char* name = alloca(nlen+1);
 					char* value = alloca(vlen+1);
 					memcpy(name,start,nlen);
@@ -112,6 +112,8 @@ int main(int argc, char**argv) {
 					value[vlen] = '\0';
 					setenv(name,value,1);
 				}
+			}
+		}
 						
 					
 
