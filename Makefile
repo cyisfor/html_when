@@ -25,7 +25,7 @@ $1/configure: $1/configure.ac
 	cd $1 && sh autogen.sh --help
 endef
 
-$(eval $(call AUTOMAKE_SUBPROJECT, libxml2, libxml2))
+$(eval $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2))
 
 N=libxmlfixes html_when selectors
 libhtmlwhen.a: $(O)
@@ -43,3 +43,5 @@ o/%.o: src/%.c libxml2/include/xmlversion.h | o
 o/%.o: %.c libxml2/include/xmlversion.h | o
 	mkdir -p `dirname $@`
 	$(COMPILE)
+
+libxml2/include/xmlversion.h: libxml2/.libs/libxml2.a
