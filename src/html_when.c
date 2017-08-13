@@ -134,3 +134,13 @@ void html_when(xmlNode* root) {
 	};
 	return html_when(root->next);
 }
+
+bool html_when_handled_error(xmlErrorPtr error) {
+	if(error != XML_HTML_UNKNOWN_TAG) return false;
+	const xmlChar* name = error->str1;
+	size_t len = strlen(name);
+	if(len != 4) return false;
+	if(0==memcmp(name,"when",4)) return true;
+	if(0==memcmp(name,"else",4)) return true;
+	return false;
+}
