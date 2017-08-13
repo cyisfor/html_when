@@ -35,7 +35,7 @@ int main(int argc, char**argv) {
 	cleanup(closedir) DIR* d = opendir(".");
 	assert(d);
 	cleanup(close) int expected = open("results",O_DIRECTORY|O_PATH);
-	if(expected < 0); {
+	if(expected < 0) {
 		if(errno == ENOENT) {
 			int res = mkdir("results",0755);
 			assert(res == 0);
@@ -85,6 +85,8 @@ int main(int argc, char**argv) {
 			assert(efd > 0);
 			size_t amt = write(efd,test,tlen);
 			ensure_eq(amt, tlen);
+			close(efd);
+			ensure0(renameat(expected,".temp",expected,ent->d_name));
 			puts("created.");
 			continue;
 		}
