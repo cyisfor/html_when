@@ -66,5 +66,5 @@ libxml2:
 #	$(call SYNC,$@,git://git.gnome.org/libxml2)
 
 note:
-	$(call SYNC,$@,../note)
+	$(call SYNC,$@,/home/code/note)
 #	$(call SYNC,$@,https://github.com/cyisfor/note.git)
