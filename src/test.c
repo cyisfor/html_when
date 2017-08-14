@@ -136,8 +136,8 @@ int main(int argc, char**argv) {
 			}
 			efd = openat(expected,".temp",O_WRONLY|O_CREAT|O_TRUNC,0644);
 			assert(efd > 0);
-			size_t amt = write(efd,test,tlen);
-			ensure_eq(amt, tlen);
+			size_t amt = write(efd,xmlBufferContent(&test),xmlBufferLength(&test));
+			ensure_eq(amt, xmlBufferLength(&test));
 			close(efd);
 			ensure0(renameat(expected,".temp",expected,ent->d_name));
 			puts("created.");
