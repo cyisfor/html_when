@@ -8,8 +8,8 @@ function sync {
 		if [[ -d $dest ]]; then
 				[[ -n "$nocheck" ]] && return
 				cd $dest
-				git pull local
-				git pull origin
+				git pull local master
+				git pull origin master
 				cd ..
 		else
 				git clone $source $dest
