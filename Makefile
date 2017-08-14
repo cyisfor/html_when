@@ -53,6 +53,6 @@ setup:
 	. ./setup.sh 
 
 
-clone: setup
+push: setup
 	[[ -n "$$remote" ]]
-	git clone libxml2 $$remote/libxml2
+	git push libxml2 $$remote/libxml2
