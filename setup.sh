@@ -3,6 +3,7 @@ function sync {
 				source=$dir
 				adjremote=1
 		else
+				exit 23
 				source=$remote
 		fi
 		if [[ -d $dest ]]; then
@@ -13,7 +14,8 @@ function sync {
 				git clone $source $dest
 				if [[ -n "$adjremote" ]]; then
 						cd $dest
-						git remote origin set-url $remote
+						git remote set-url origin $remote
+						git remote add local $source
 						cd ..
 				fi
 		fi
