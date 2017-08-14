@@ -175,7 +175,7 @@ void foreachNode(xmlNode* parent, const char* name, void (*handle)(xmlNode*,void
     }
 }
 
-xmlChar* findProp(xmlNode* o, xmlChar* name, size_t len) {
+xmlChar* findPropCsux(xmlNode* o, xmlChar* name, size_t len) {
 	xmlAttr* a;
 	for(a = o->properties;a;a = a->next) {
 		if(0==strncmp(a->name,name,len)) {
