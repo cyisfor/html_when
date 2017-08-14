@@ -108,9 +108,8 @@ int main(int argc, char**argv) {
 				}
 			}
 		}
-		
-		xmlChar* test = NULL;
-		int tlen;
+
+		xmlBuffer test = {};
 		{
 			cleanup(xmlFreeDoc) xmlDoc* doc = ({
 					cleanup(close) int fd = open(ent->d_name,O_RDONLY);
@@ -121,7 +120,11 @@ int main(int argc, char**argv) {
 			HTML5_plz(doc);
 			html_when((xmlNode*)doc); // magic...
 
-			htmlDocDumpMemory(doc,&test,&tlen);
+			xmlCharEncodingHandler* encoding = xmlGetCharEncodingHandler(XML_CHAR_ENCODING_UTF8);
+			xmlOutputBuffer* out = xmlOutputBufferCreateBuffer(&test, encoding);
+			htmlDocContentDumpFormatOutput(out, doc, NULL, 0);
+			xmlOutputBufferClose(out);
+			
 		}
 
 		cleanup(close) int efd = openat(expected,ent->d_name,O_RDONLY);
