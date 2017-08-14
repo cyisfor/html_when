@@ -71,7 +71,7 @@ int main(int argc, char**argv) {
 			cleanup(close) int e = openat(env,name,O_DIRECTORY|O_PATH);
 			struct stat info;
 			if(e >= 0) {
-				assert(0==fstat(efd,&info));
+				assert(0==fstat(e,&info));
 				UNMAP(info,char*) mem = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,e,0);
 				assert(mem != MAP_FAILED);
 				char* start = mem;
