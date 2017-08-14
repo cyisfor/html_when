@@ -90,13 +90,17 @@ int main(int argc, char**argv) {
 					if(end == NULL) {
 						// no trailing newline
 						vlen = info.st_size-(eq-mem);
+					} else {
+						vlen = end-eq;
 					}
 					INFO("set env %.*s %.*s",nlen,start,vlen,eq);
 					char* name = alloca(nlen+1);
 					char* value = alloca(vlen+1);
 					memcpy(name,start,nlen);
-					name[nlen] = '\0';
 					memcpy(value,eq,vlen);
+					start = end+1;
+					if(start >= mem + info.st_size) break;
+					name[nlen] = '\0';
 					value[vlen] = '\0';
 					setenv(name,value,1);
 				}
