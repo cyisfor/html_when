@@ -174,3 +174,14 @@ void foreachNode(xmlNode* parent, const char* name, void (*handle)(xmlNode*,void
         cur = next;
     }
 }
+
+xmlChar* findProp(xmlNode* o, xmlChar* name, size_t len) {
+	xmlAttr* a;
+	for(a = o->properties;a;a = a->next) {
+		if(0==strncmp(a->name,name,len)) {
+			return a->children->content; // this is true for ALL attributes so why the tree?
+		}
+	}
+	return NULL;
+}
+	

@@ -10,3 +10,4 @@ void HTML5_plz(xmlDoc* doc);
 
 // I KNOW I created this before...
 xmlChar* findProp(xmlNode* o, xmlChar* name, size_t len);
+#define findProp(a) findProp(a,sizeof(a)-1)
