@@ -60,9 +60,11 @@ define SYNC
 		cd $1 && git pull; \
 	fi
 endef
-
+.PHONY: libxml2 note
 libxml2:
-	$(call SYNC,$@,git://git.gnome.org/libxml2)
+	$(call SYNC,$@,/extra/home/packages/git/libxml2/)
+#	$(call SYNC,$@,git://git.gnome.org/libxml2)
 
 note:
-	$(call SYNC,$@,https://github.com/cyisfor/note.git)
+	$(call SYNC,$@,../note)
+#	$(call SYNC,$@,https://github.com/cyisfor/note.git)
