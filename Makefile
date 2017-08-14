@@ -48,3 +48,21 @@ o/%.o: %.c | o
 	$(COMPILE)
 
 libxml2/$(XMLVERSION): libxml2/.libs/libxml2.a
+
+setup: libxml2 note
+
+define SYNC
+	if [[ ! -d $1 ]]; then \
+		git clone --recurse-submodules $2 pending-$1 && \
+		$(MAKE) -C pending-$1 && \
+		mv pending-$1 $1 ; \
+	else \
+		cd $1 && git pull; \
+	fi
+endef
+
+libxml2:
+	$(call SYNC,$@,git://git.gnome.org/libxml2)
+
+note:
+	$(call SYNC,$@,https://github.com/cyisfor/note.git)
