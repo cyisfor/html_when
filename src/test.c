@@ -68,7 +68,7 @@ int main(int argc, char**argv) {
 		fflush(stdout);
 
 		{
-			cleanup(close) int e = openat(env,name,O_DIRECTORY|O_PATH);
+			cleanup(close) int e = openat(env,name,O_RDONLY);
 			struct stat info;
 			if(e >= 0) {
 				assert(0==fstat(e,&info));
