@@ -1,4 +1,4 @@
-CFLAGS+=-ggdb -Ilibxml2/include/ -Inote/
+CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/
 
 XMLVERSION:=include/libxml/xmlversion.h
 
