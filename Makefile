@@ -52,7 +52,7 @@ libxml2/$(XMLVERSION): libxml2/.libs/libxml2.a
 setup: libxml2 note
 
 define SYNC
-	if [[ ! -d $1 ]]; then \
+	@if [[ ! -d $1 ]]; then \
 		git clone $2 pending-$1 && \
 		mv pending-$1 $1 ; \
 	else \
