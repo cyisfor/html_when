@@ -55,7 +55,7 @@ int main(int argc, char**argv) {
 		WARN("xml error %s",error->message);
 	}
 	xmlSetStructuredErrorFunc(NULL,on_error);
-	
+
 	while(ent = readdir(d)) {
 		size_t len = strlen(ent->d_name);
 		if(len < 5) continue;
@@ -66,38 +66,6 @@ int main(int argc, char**argv) {
 		fputs(name,stdout);
 		fputs("...",stdout);
 		fflush(stdout);
-		xmlChar* test = NULL;
-		int tlen;
-		{
-			cleanup(xmlFreeDoc) xmlDoc* doc = ({
-					cleanup(close) int fd = open(ent->d_name,O_RDONLY);
-					ensure_gt(fd,0);
-					readFunky(fd, NULL, 0);
-				});
-			assert(doc);
-			HTML5_plz(doc);
-			html_when((xmlNode*)doc); // magic...
-
-			htmlDocDumpMemory(doc,&test,&tlen);
-		}
-
-		cleanup(close) int efd = openat(expected,ent->d_name,O_RDONLY);
-		struct stat info;
-		if(efd < 0) {
-			puts("expected not found. ^C to not create");
-			if(getchar() == 'n') {
-				continue;
-			}
-			efd = openat(expected,".temp",O_WRONLY|O_CREAT|O_TRUNC,0644);
-			assert(efd > 0);
-			size_t amt = write(efd,test,tlen);
-			ensure_eq(amt, tlen);
-			close(efd);
-			ensure0(renameat(expected,".temp",expected,ent->d_name));
-			puts("created.");
-			continue;
-		}
-		assert(0==fstat(efd,&info));
 
 		{
 			cleanup(close) int e = openat(env,name,O_DIRECTORY|O_PATH);
@@ -134,9 +102,40 @@ int main(int argc, char**argv) {
 				}
 			}
 		}
-						
-					
+		
+		xmlChar* test = NULL;
+		int tlen;
+		{
+			cleanup(xmlFreeDoc) xmlDoc* doc = ({
+					cleanup(close) int fd = open(ent->d_name,O_RDONLY);
+					ensure_gt(fd,0);
+					readFunky(fd, NULL, 0);
+				});
+			assert(doc);
+			HTML5_plz(doc);
+			html_when((xmlNode*)doc); // magic...
 
+			htmlDocDumpMemory(doc,&test,&tlen);
+		}
+
+		cleanup(close) int efd = openat(expected,ent->d_name,O_RDONLY);
+		struct stat info;
+		if(efd < 0) {
+			puts("expected not found. ^C to not create");
+			if(getchar() == 'n') {
+				continue;
+			}
+			efd = openat(expected,".temp",O_WRONLY|O_CREAT|O_TRUNC,0644);
+			assert(efd > 0);
+			size_t amt = write(efd,test,tlen);
+			ensure_eq(amt, tlen);
+			close(efd);
+			ensure0(renameat(expected,".temp",expected,ent->d_name));
+			puts("created.");
+			continue;
+		}
+		assert(0==fstat(efd,&info));
+		
 		ensure_eq(tlen,info.st_size);
 		UNMAP(info,xmlChar*) expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
