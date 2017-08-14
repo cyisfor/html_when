@@ -98,11 +98,13 @@ int main(int argc, char**argv) {
 					char* value = alloca(vlen+1);
 					memcpy(name,start,nlen);
 					memcpy(value,eq,vlen);
-					start = end+1;
-					if(start >= mem + info.st_size) break;
 					name[nlen] = '\0';
 					value[vlen] = '\0';
 					setenv(name,value,1);
+					if(end==NULL) break;
+					start = end+1;
+					if(start >= mem + info.st_size) break;
+
 				}
 			}
 		}
