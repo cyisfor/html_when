@@ -51,3 +51,8 @@ libxml2/$(XMLVERSION): libxml2/.libs/libxml2.a
 
 setup:
 	. ./setup.sh 
+
+
+clone: setup
+	[[ -n "$$remote" ]]
+	git clone libxml2 $$remote/libxml2
