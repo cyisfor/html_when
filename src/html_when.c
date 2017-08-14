@@ -44,12 +44,18 @@ static xmlNode* found_when(xmlNode* cur) {
 	}
 
 	xmlNode* replaceval(xmlNode* n) {
-		if(!envval) return n;
 		if(n->type == XML_ELEMENT_NODE) {
 			if(0 == strcasecmp(n->name,"val")) {
-				xmlNode* new = xmlNewText(envval); // need make 1 per replacement
-				xmlReplaceNode(n,new);
-				return new;
+				if(envval) {
+					xmlNode* new = xmlNewText(envval); // need make 1 per replacement
+					xmlReplaceNode(n,new);
+					return new;
+				} else {
+					xmlNode* next = n->next;
+					xmlUnlinkNode(n);
+					xmlFreeNode(n);
+					return next;
+				}
 			} else if(0 == strcasecmp(n->name,"when")) {
 				// should be impossible? we handle from bottom up!
 				perror("what?");
@@ -77,9 +83,7 @@ static xmlNode* found_when(xmlNode* cur) {
 					// will be removed with cur
 					break;
 				} else {
-					if(envval) {
-						kid = replaceval(kid);
-					}
+					kid = replaceval(kid);
 				}
 			}
 			xmlNode* next = kid->next;
