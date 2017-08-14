@@ -145,10 +145,10 @@ int main(int argc, char**argv) {
 		}
 		assert(0==fstat(efd,&info));
 		
-		ensure_eq(tlen,info.st_size);
+		ensure_eq(xmlBufferLength(&test),info.st_size);
 		UNMAP(info,xmlChar*) expected = mmap(NULL,info.st_size,PROT_READ,MAP_PRIVATE,efd,0);
 		assert(expected != MAP_FAILED);
-		ensure_eq(0,memcmp(test,expected,tlen));
+		ensure_eq(0,memcmp(expected,xmlBufferContent(&test), xmlBufferLength(&test)));
 		puts(" passed");
 	}
 }
