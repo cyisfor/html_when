@@ -4,4 +4,4 @@
 	ignore = untracked
 [submodule "note"]
 	path = note
-	url = ./note
+	url = https://github.com/cyisfor/note.git
