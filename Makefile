@@ -1,4 +1,7 @@
 CFLAGS+=-ggdb -Ilibxml2/include/ -Inote/
+
+XMLVERSION:=include/libxml/xmlversion.h
+
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N) o/note/note.o
@@ -36,12 +39,12 @@ o:
 
 COMPILE=$(CC) $(CFLAGS) -c -o $@ $<
 
-o/%.o: src/%.c libxml2/include/xmlversion.h | o
+o/%.o: src/%.c libxml2/$(XMLVERSION) | o
 	$(COMPILE)
 
 
-o/%.o: %.c libxml2/include/xmlversion.h | o
+o/%.o: %.c | o
 	mkdir -p `dirname $@`
 	$(COMPILE)
 
-libxml2/include/xmlversion.h: libxml2/.libs/libxml2.a
+libxml2/$(XMLVERSION): libxml2/.libs/libxml2.a
