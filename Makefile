@@ -56,6 +56,10 @@ setup: ./setup.sh
 git-tools/funcs.sh:
 	git submodule update --init
 
-push: setup
-	[[ -n "$$remote" ]]
-	git push libxml2 $$remote/libxml2
+
+git-tools/pushcreate:
+	$(MAKE) -C git-tools
+
+push: setup ./git-tools/pushcreate 
+	[[ -n "$(remote)" ]]
+	./git-tools/pushcreate $(remote)/libxml2
