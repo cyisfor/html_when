@@ -57,7 +57,7 @@ git-tools/funcs.sh:
 	git submodule update --init
 
 
-git-tools/pushcreate:
+git-tools/pushcreate: git-tools/pushcreate.c
 	$(MAKE) -C git-tools
 
 push: setup ./git-tools/pushcreate 
