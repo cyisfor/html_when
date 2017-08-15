@@ -49,9 +49,12 @@ o/%.o: %.c | o
 
 libxml2/$(XMLVERSION): libxml2/.libs/libxml2.a
 
-setup:
-	. ./setup.sh 
+setup: ./setup.sh
+	. ./setup.sh
 
+./setup.sh: git-tools/funcs.sh
+git-tools/funcs.sh:
+	git submodule update --init
 
 push: setup
 	[[ -n "$$remote" ]]
