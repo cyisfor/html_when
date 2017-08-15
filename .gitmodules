@@ -1,3 +1,6 @@
 [submodule "note"]
 	path = note
 	url = https://github.com/cyisfor/note.git
+[submodule "git-tools"]
+	path = git-tools
+	url = https://github.com/cyisfor/git-tools.git
