@@ -62,4 +62,5 @@ git-tools/pushcreate:
 
 push: setup ./git-tools/pushcreate 
 	[[ -n "$(remote)" ]]
+	./git-tools/pushcreate "$(remote)"
 	./git-tools/pushcreate "$(remote)/libxml2"
