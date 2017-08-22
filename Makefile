@@ -1,4 +1,4 @@
-$(shell $(MAKE) -C libxmlfixes >/dev/null)
+F:=$(shell $(MAKE) -C libxmlfixes >/dev/null)
 
 CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/ -Ilibxmlfixes
 XMLVERSION:=include/libxml/xmlversion.h
