@@ -34,7 +34,7 @@ $(eval $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2))
 
 N=html_when selectors
 libhtmlwhen.a: $(O) libxml2/.libs/libxml2.a
-	$(AR) $(ARFLAGS) $@ $^
+		sh ./funnyar.sh $@ $^ | ar -M
 
 o:
 	mkdir $@
