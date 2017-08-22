@@ -1,8 +1,10 @@
-CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/
+$(shell $(MAKE) -C libxmlfixes >/dev/null)
 
+CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/ -Ilibxmlfixes
 XMLVERSION:=include/libxml/xmlversion.h
 
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
+LDLIBS+=./libxmlfixes/libxmlfixes.a
 LINK=$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 O=$(patsubst %,o/%.o,$N) o/note/note.o
 OO=$O $L
