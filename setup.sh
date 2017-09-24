@@ -6,7 +6,7 @@ dest=git-tools
 clonepull
 
 local=/extra/home/packages/git/libxml2
-remote=git://git.gnome.org/libxml2
+remote=https://github.com/cyisfor/libxml2.git
 dest=libxml2
 clonepull
 
