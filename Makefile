@@ -1,4 +1,7 @@
-CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/ -Ilibxmlfixes
+include head.mk
+
+CFLAGS+=-ggdb
+CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 XMLVERSION:=include/libxml/xmlversion.h
 
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
@@ -15,6 +18,9 @@ all: example test
 N=app
 example: $(OO) $(L)
 	$(LINK)
+
+libxmlfixes/libxmlfixes.la:
+	$(MAKE) -C $(dir $@) $(notdir $@)
 
 N=test
 test: $(OO)
@@ -33,14 +39,16 @@ endef
 
 $(eval $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2))
 
-libxml2/configure.ac: libxmlfixes/libxml2
+libxml2/configure.ac: libxml2 libxmlfixes/libxml2
+
+libxml2:
+	sh setup.sh
 
 libxmlfixes/libxml2:
-	cd $(dir $@) && sh ./setup.sh
-
+	$(MAKE) -C $(dir $@) setup
 
 N=html_when selectors
-libhtmlwhen.la: $(O) libxmlfixes/libxmlfixes.la
+libhtmlwhen.la: $(O)
 	$(LINK)
 
 %.la: o/%.o
