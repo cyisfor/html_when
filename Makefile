@@ -5,7 +5,10 @@ CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
 o/note/note.o: o/note/
 
-L=libxml2/libxml2.la libhtmlwhen.la libxmlfixes/libxmlfixes.la
+VPATH+=libxmlfixes
+L=libxml2.la libhtmlwhen.la libxmlfixes.la
+
+$(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
 
 all: example test
 
@@ -13,14 +16,11 @@ N=app note/note
 example: $(O) $(L)
 	$(LINK)
 
-libxmlfixes/libxmlfixes.la:
-	$(MAKE) -C $(dir $@) $(notdir $@)
+include libxmlfixes/main.mk
 
 N=test note/note
 test: $(O) $(L)
 	$(LINK)
-
-$(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
 
 libxml2/configure.ac: libxml2 libxmlfixes/libxml2
 
@@ -37,7 +37,7 @@ libhtmlwhen.la: $(O)
 o/note: | o
 	mkdir $@
 
-coolmake/head.mk coolmake/tail.mk setup: ./setup.sh
+coolmake coolmake/head.mk coolmake/tail.mk setup: ./setup.sh
 	. ./setup.sh
 
 ./setup.sh: git-tools/funcs.sh
