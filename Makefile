@@ -4,15 +4,18 @@ CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/ -Ilibxmlfixes
 XMLVERSION:=include/libxml/xmlversion.h
 
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
-LDLIBS+=./libxmlfixes/libxmlfixes.la
-LINK=libtool --tag=CC --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+LIBTOOL:=libtool --tag=CC --mode=
+LINK=$(LIBTOOL)link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+COMPILE=$(LIBTOOL)compile $(CC) $(CFLAGS) -c -o $@ $<
+
 O=$(patsubst %,o/%.o,$N) o/note/note.o
 OO=$O $L
-L=libxml2/libxml2.la libhtmlwhen.la 
+L=libxml2/libxml2.la libhtmlwhen.la libxmlfixes/libxmlfixes.la
 all: example test
 
 N=app
-example: $(OO)
+example: $(OO) $(L)
 	$(LINK)
 
 N=test
@@ -21,7 +24,7 @@ test: $(OO)
 
 define AUTOMAKE_SUBPROJECT
 $1/$2.la: $1/Makefile
-	$(MAKE) -C $1
+	$$(MAKE) -C $1
 
 $1/Makefile: $1/configure
 	sh config-my-$1.sh
@@ -33,16 +36,14 @@ endef
 $(eval $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2))
 
 N=html_when selectors
-libhtmlwhen.la: $(O)
+libhtmlwhen.la: $(O) libxmlfixes/libxmlfixes.la
 	$(LINK)
 
 %.la: o/%.o
-	libtool --mode=link $(CC) 
+	$(LINK)
 
 o:
 	mkdir $@
-
-COMPILE=$(CC) $(CFLAGS) -c -o $@ $<
 
 o/%.o: src/%.c libxml2/$(XMLVERSION) | o
 	$(COMPILE)

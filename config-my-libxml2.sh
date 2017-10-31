@@ -1,0 +1,38 @@
+cd libxml2 || exit 3
+exec ./configure --enable-static --disable-shared \
+		 --without-c14n            \
+	   --without-catalog          \
+	   --with-debug            \
+	   --without-docbook          \
+	   --without-fexceptions      \
+	   --without-ftp              \
+	   --without-history          \
+	   --with-html             \
+	   --with-http             \
+		 --with-iconv      \
+		 --without-icu                \
+	   --with-iso8859x         \
+	   --without-legacy           \
+	   --without-mem-debug        \
+	   --without-minimum          \
+	   --with-output           \
+	   --without-pattern          \
+	   --with-push             \
+	   --without-python     			\
+	   --without-reader           \
+	   --without-readline     	\
+	   --without-regexps          \
+	   --without-run-debug        \
+	   --without-sax1             \
+	   --without-schemas          \
+	   --without-schematron       \
+	   --without-threads          \
+	   --without-thread-alloc     \
+	   --with-tree             \
+	   --without-valid            \
+	   --without-writer           \
+	   --without-xinclude         \
+	   --without-xpath            \
+	   --without-xptr             \
+	   --without-modules          \
+	   --without-zlib       
