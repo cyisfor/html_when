@@ -1,13 +1,11 @@
-F:=$(shell $(MAKE) -C libxmlfixes >/dev/null)
-
 CFLAGS+=-ggdb -O2 -Ilibxml2/include/ -Inote/ -Ilibxmlfixes
 XMLVERSION:=include/libxml/xmlversion.h
 
 LDLIBS+=$(shell xml2-config --libs | sed -e's/-xml2//g')
 
 LIBTOOL:=libtool --tag=CC --mode=
-LINK=$(LIBTOOL)link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
-COMPILE=$(LIBTOOL)compile $(CC) $(CFLAGS) -c -o $@ $<
+LINK=@echo LINK $*; $(LIBTOOL)link $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+COMPILE=@echo COMPILE $*; $(LIBTOOL)compile $(CC) $(CFLAGS) -c -o $@ $<
 
 O=$(patsubst %,o/%.o,$N) o/note/note.o
 OO=$O $L
