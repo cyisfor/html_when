@@ -5,7 +5,7 @@ CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
 o/note/note.o: o/note/
 
-VPATH+=libxmlfixes
+VPATH+=libxmlfixes/src libxmlfixes/
 L=libxml2.la libhtmlwhen.la libxmlfixes.la
 
 $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
