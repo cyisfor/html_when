@@ -33,6 +33,12 @@ endef
 
 $(eval $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2))
 
+libxml2/configure.ac: libxmlfixes/libxml2
+
+libxmlfixes/libxml2:
+	cd $(dir $@) && sh ./setup.sh
+
+
 N=html_when selectors
 libhtmlwhen.la: $(O) libxmlfixes/libxmlfixes.la
 	$(LINK)

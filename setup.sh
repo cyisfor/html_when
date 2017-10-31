@@ -1,13 +1,9 @@
 . git-tools/funcs.sh
 
+# uh...
 local=/home/code/git-tools
 remote=https://github.com/cyisfor/git-tools.git
 dest=git-tools
-clonepull
-
-local=/extra/home/packages/git/libxml2
-remote=https://github.com/cyisfor/libxml2.git
-dest=libxml2
 clonepull
 
 local=/home/code/note
@@ -19,3 +15,8 @@ local=/home/code/libxmlfixes
 remote=https://github.com/cyisfor/libxmlfixes.git
 dest=libxmlfixes
 clonepull
+
+uplink libxmlfixes libxml2
+uplink libxmlfixes coolmake
+
+
