@@ -3,16 +3,13 @@ CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
 include coolmake/top.mk
 
-o/note/note.o: o/note/
-
-LDLIBS+=libxml2/libxml2.la libxmlfixes/libxmlfixes.la
-
 $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
 
 all: example test
 
+LIBS=libhtmlwhen.la libxml2/libxml2.la libxmlfixes/libxmlfixes.la
+
 N=app note/note
-NN=libhtmlwhen.la
 OUT=example
 $(eval $(PROGRAM))
 
@@ -30,14 +27,17 @@ libxml2:
 libxmlfixes/libxml2:
 	$(MAKE) -C $(dir $@) setup
 
+LIBS=libxml2/libxml2.la libxmlfixes/libxmlfixes.la
 N=html_when selectors
 OUT=libhtmlwhen.la
 $(eval $(PROGRAM))
 
+undefine LIBS
+
 $(O)/note: | $(O)
 	mkdir $@
 
-$(O)/note/note.lo: | $(O)/note
+$(O)/note/note.lo: note/note.c | $(O)/note
 	$(COMPILE)
 
 setup: ./setup.sh
