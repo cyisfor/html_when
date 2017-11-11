@@ -19,8 +19,7 @@ N=test note/note
 OUT=test
 $(eval $(PROGRAM))
 
-libxml2: | libxmlfixes/libxml2
-	$(SYMLINK)
+$(call UPLINK,libxmlfixes,libxml2)
 
 libxmlfixes/libxml2: | libxmlfixes
 	$(MAKE) -C $| libxml2
