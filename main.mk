@@ -1,5 +1,3 @@
-include coolmake/head.mk
-
 CFLAGS+=-ggdb
 CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
@@ -37,12 +35,8 @@ libhtmlwhen.la: $(O)
 o/note: | o
 	mkdir $@
 
-coolmake coolmake/head.mk coolmake/tail.mk setup: ./setup.sh
+setup: ./setup.sh
 	. ./setup.sh
-
-./setup.sh: git-tools/funcs.sh
-git-tools/funcs.sh:
-	git submodule update --init
 
 git-tools/pushcreate: git-tools/pushcreate.c
 	$(MAKE) -C git-tools
@@ -51,5 +45,3 @@ push: setup ./git-tools/pushcreate
 	[[ -n "$(remote)" ]]
 	./git-tools/pushcreate "$(remote)"
 	(cd libxml2 && ../git-tools/pushcreate "$(remote)/libxml2")
-
-include coolmake/tail.mk
