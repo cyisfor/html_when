@@ -5,20 +5,18 @@ include coolmake/top.mk
 
 o/note/note.o: o/note/
 
-VPATH+=libxmlfixes/src libxmlfixes/
-LDLIBS+=libxml2.la libhtmlwhen.la libxmlfixes.la
+LDLIBS+=libxml2/libxml2.la libxmlfixes/libxmlfixes.la
 
 $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
 
 all: example test
 
 N=app note/note
+NN=libhtmlwhen.la
 OUT=example
 $(eval $(PROGRAM))
 
-$(eval $(PUSHVARS))
-include libxmlfixes/main.mk
-$(eval $(POPVARS))
+$(OBJECTS): | libxml2
 
 N=test note/note
 OUT=test
@@ -33,11 +31,14 @@ libxmlfixes/libxml2:
 	$(MAKE) -C $(dir $@) setup
 
 N=html_when selectors
-libhtmlwhen.la: $(O)
-	$(LINK)
+OUT=libhtmlwhen.la
+$(eval $(PROGRAM))
 
-o/note: | o
+$(O)/note: | $(O)
 	mkdir $@
+
+$(O)/note/note.lo: | $(O)/note
+	$(COMPILE)
 
 setup: ./setup.sh
 	. ./setup.sh
@@ -49,3 +50,8 @@ push: setup ./git-tools/pushcreate
 	[[ -n "$(remote)" ]]
 	./git-tools/pushcreate "$(remote)"
 	(cd libxml2 && ../git-tools/pushcreate "$(remote)/libxml2")
+
+
+$(eval $(PUSHVARS))
+include libxmlfixes/main.mk
+$(eval $(POPVARS))
