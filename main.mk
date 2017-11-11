@@ -1,24 +1,28 @@
 CFLAGS+=-ggdb
 CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
+include coolmake/top.mk
+
 o/note/note.o: o/note/
 
 VPATH+=libxmlfixes/src libxmlfixes/
-L=libxml2.la libhtmlwhen.la libxmlfixes.la
+LDLIBS+=libxml2.la libhtmlwhen.la libxmlfixes.la
 
 $(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
 
 all: example test
 
 N=app note/note
-example: $(O) $(L)
-	$(LINK)
+OUT=example
+$(eval $(PROGRAM))
 
+$(eval $(PUSHVARS))
 include libxmlfixes/main.mk
+$(eval $(POPVARS))
 
 N=test note/note
-test: $(O) $(L)
-	$(LINK)
+OUT=test
+$(eval $(PROGRAM))
 
 libxml2/configure.ac: libxml2 libxmlfixes/libxml2
 
