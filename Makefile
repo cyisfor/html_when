@@ -1,6 +1,8 @@
 include coolmake/main.mk
 coolmake/main.mk: | coolmake
-	$(MAKE)
+	@echo Coolmake...
+	[[ -e $@ ]] || exit 3
+	$(S)$(MAKE)
 coolmake: libxmlfixes/coolmake
 	ln -rs $< $@
 

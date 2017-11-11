@@ -19,13 +19,11 @@ N=test note/note
 OUT=test
 $(eval $(PROGRAM))
 
-libxml2/configure.ac: libxml2 libxmlfixes/libxml2
+libxml2: | libxmlfixes/libxml2
+	$(SYMLINK)
 
-libxml2:
-	sh setup.sh
-
-libxmlfixes/libxml2:
-	$(MAKE) -C $(dir $@) setup
+libxmlfixes/libxml2: | libxmlfixes
+	$(MAKE) -C $| libxml2
 
 LIBS=libxml2/libxml2.la libxmlfixes/libxmlfixes.la
 N=html_when selectors
