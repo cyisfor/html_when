@@ -3,7 +3,7 @@ CFLAGS+=-Ilibxml2/include/ -Inote/ -Ilibxmlfixes/src
 
 include coolmake/top.mk
 
-$(call AUTOMAKE_SUBPROJECT,libxml2,libxml2)
+$(call AUTOMAKE_SUBPROJECT,libxml2,libxml2,libxmlfixes)
 
 all: example test
 
